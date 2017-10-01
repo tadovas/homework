@@ -1,6 +1,7 @@
 package org.solar.crawlerlog.domain;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CrawlerLog {
@@ -15,7 +16,10 @@ public class CrawlerLog {
      */
     private Collection<Celebrity> celebrityList = new ConcurrentLinkedQueue<>();
 
-    private RepositoryId repositoryId;
+    /**
+     * Same as above - muating reference
+     */
+    private volatile RepositoryId repositoryId = null;
 
     private CrawlerLog(LogId id, SourceUrl sourceUrl) {
 
@@ -23,16 +27,27 @@ public class CrawlerLog {
         this.sourceUrl = sourceUrl;
     }
 
+    public boolean isFinished() {
+        return repositoryId != null;
+    }
+
+    private void ensureNotFinished() {
+
+        if(isFinished()) {
+            throw new LogAlreadyFinishedException("Log is already finished: " + id + " repo: " + repositoryId);
+        }
+    }
+
     public void addCelebrities(Collection<Celebrity> celebrities) {
+
+        ensureNotFinished();
         celebrityList.addAll(celebrities);
     }
 
     public void finish(RepositoryId repositoryId) {
-        this.repositoryId = repositoryId;
-    }
 
-    public boolean isFinished() {
-        return repositoryId != null;
+        ensureNotFinished();
+        this.repositoryId = repositoryId;
     }
 
     public LogId getId() {
@@ -41,6 +56,14 @@ public class CrawlerLog {
 
     public SourceUrl getSourceUrl() {
         return sourceUrl;
+    }
+
+    public RepositoryId getRepositoryId() {
+        return repositoryId;
+    }
+
+    public Collection<Celebrity> getCelebrities() {
+        return Collections.unmodifiableCollection(celebrityList);
     }
 
     public static CrawlerLog newCrawlerLog(LogId id , SourceUrl sourceUrl){
