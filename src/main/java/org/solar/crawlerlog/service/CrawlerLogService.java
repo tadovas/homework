@@ -31,9 +31,9 @@ public class CrawlerLogService {
         return CreationResult.newResult( newLogId , anyUnfinishedLogsExist);
     }
 
-    public void addFamousPersons(LogId id , Collection<FamousPerson> famousPeople) {
+    public void addFamousPersons(LogId id , Collection<Celebrity> celebrities) {
 
-        findApplyAndSave(id , crawlerLog -> crawlerLog.addFamousPersons(famousPeople));
+        findApplyAndSave(id , crawlerLog -> crawlerLog.addCelebrities(celebrities));
     }
 
     public void finishCrawlerLog(LogId id, RepositoryId repositoryId) {

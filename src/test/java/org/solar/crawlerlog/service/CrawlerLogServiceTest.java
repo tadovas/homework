@@ -2,17 +2,13 @@ package org.solar.crawlerlog.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.solar.crawlerlog.domain.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -78,12 +74,12 @@ public class CrawlerLogServiceTest {
         when(crawlerLogRepository.findById(any())).thenReturn(Optional.ofNullable(existingLog));
 
 
-        Collection<FamousPerson> famousPeople = Collections.emptyList();
+        Collection<Celebrity> famousPeople = Collections.emptyList();
         crawlerLogService.addFamousPersons( LogId.newLogId("irrelevant") , famousPeople);
 
         verify(crawlerLogRepository).save(eq(existingLog));
 
-        verify(existingLog).addFamousPersons(eq(famousPeople));
+        verify(existingLog).addCelebrities(eq(famousPeople));
     }
 
     @Test

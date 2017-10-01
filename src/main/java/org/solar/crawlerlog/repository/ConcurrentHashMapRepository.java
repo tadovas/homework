@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
 
@@ -17,7 +17,6 @@ import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
  *   they are stored and retrieved as references instead of full copies like real persistence storages do.
  *   Therefore objects which we are persisting should be aware of possible concurrent access and it's not very cool :(
  */
-
 public class ConcurrentHashMapRepository implements CrawlerLogRepository {
 
     private Map<LogId , CrawlerLog> crawlerLogMap = new ConcurrentHashMap<>();
@@ -50,7 +49,8 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
     }
 
     private Collection<CrawlerLog> queryByPredicate(Predicate<CrawlerLog> predicate){
-        return crawlerLogMap.values().stream().filter(predicate)
+        return crawlerLogMap.values().stream()
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 

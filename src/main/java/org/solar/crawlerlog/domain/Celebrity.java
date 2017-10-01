@@ -1,4 +1,4 @@
 package org.solar.crawlerlog.domain;
 
-public class FamousPerson {
+public class Celebrity {
 }

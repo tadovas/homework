@@ -1,8 +1,7 @@
 package org.solar.crawlerlog.domain;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CrawlerLog {
 
@@ -10,7 +9,11 @@ public class CrawlerLog {
 
     private SourceUrl sourceUrl;
 
-    private List<FamousPerson> personList = Collections.emptyList();
+    /**
+     * Because of our naive in memory implementation approach, persisted objects are not thread safe and might be shared
+     * between threads (return reference not copy). @see {@link org.solar.crawlerlog.repository.ConcurrentHashMapRepository}
+     */
+    private Collection<Celebrity> celebrityList = new ConcurrentLinkedQueue<>();
 
     private RepositoryId repositoryId;
 
@@ -20,10 +23,9 @@ public class CrawlerLog {
         this.sourceUrl = sourceUrl;
     }
 
-    public void addFamousPersons(Collection<FamousPerson> personsToAdd) {
-
+    public void addCelebrities(Collection<Celebrity> celebrities) {
+        celebrityList.addAll(celebrities);
     }
-
 
     public void finish(RepositoryId repositoryId) {
         this.repositoryId = repositoryId;
@@ -32,8 +34,6 @@ public class CrawlerLog {
     public boolean isFinished() {
         return repositoryId != null;
     }
-
-
 
     public LogId getId() {
         return id;
