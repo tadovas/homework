@@ -41,6 +41,7 @@ public class CrawlerLogServiceTest {
     public void createNewLogReturnsLogResultContainingLogId(){
 
         when(crawlerLogRepository.nextLogId()).thenReturn(LogId.newLogId("123"));
+        when(crawlerLogRepository.findAllBySpec(any())).thenReturn(Stream.empty());
 
         CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.newUrl("urlToScan"));
 
