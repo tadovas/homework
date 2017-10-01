@@ -26,7 +26,7 @@ public class CrawlerLog {
 
 
     public void finish(RepositoryId repositoryId) {
-
+        this.repositoryId = repositoryId;
     }
 
     public boolean isFinished() {

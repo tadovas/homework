@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
 
 @Service
 public class CrawlerLogService {
@@ -21,32 +20,33 @@ public class CrawlerLogService {
     }
 
 
-    public CreationResult createNewCrawlerLog(SourceUrl sourceUrl){
+    public CreationResult createNewCrawlerLog(SourceUrl sourceUrl) {
 
         LogId newLogId = repository.nextLogId();
 
-        boolean anyUnfinishedLogsExist = repository.findAllBySpec(hasSourceUrl(sourceUrl).and(notFinished())).findFirst().isPresent();
+        boolean anyUnfinishedLogsExist = repository.findAllUnfinishedForSourceUrl(sourceUrl).size() > 0;
 
         repository.save(CrawlerLog.newCrawlerLog(newLogId , sourceUrl));
 
         return CreationResult.newResult( newLogId , anyUnfinishedLogsExist);
     }
 
-    public void addFamousPersons(LogId logId , Collection<FamousPerson> famousPeople) {
+    public void addFamousPersons(LogId id , Collection<FamousPerson> famousPeople) {
 
-        repository.findById(logId).ifPresent(applyAndSave(crawlerLog -> crawlerLog.addFamousPersons(famousPeople) ));
-
-
+        findApplyAndSave(id , crawlerLog -> crawlerLog.addFamousPersons(famousPeople));
     }
 
     public void finishCrawlerLog(LogId id, RepositoryId repositoryId) {
 
-        repository.findById(id).ifPresent(applyAndSave(crawlerLog -> crawlerLog.finish(repositoryId)));
+        findApplyAndSave(id , crawlerLog -> crawlerLog.finish(repositoryId));
     }
 
 
-    private Consumer<CrawlerLog> applyAndSave(Consumer<CrawlerLog> crawlerLogConsumer){
-        return crawlerLogConsumer.andThen(repository::save);
+    private void findApplyAndSave(LogId id , Consumer<CrawlerLog> crawlerLogConsumer) {
+
+        CrawlerLog log = repository.findById(id).orElseThrow(() -> new CrawlerLogNotFoundException("Log not found with id: " + id));
+        crawlerLogConsumer.accept(log);
+        repository.save(log);
     }
 
 }

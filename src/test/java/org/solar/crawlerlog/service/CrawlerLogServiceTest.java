@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.solar.crawlerlog.domain.*;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class CrawlerLogServiceTest {
 
 
     @Before
-    public void beforeEach(){
+    public void beforeEach() {
 
 
         crawlerLogService  = new CrawlerLogService(crawlerLogRepository);
@@ -38,10 +39,10 @@ public class CrawlerLogServiceTest {
 
 
     @Test
-    public void createNewLogReturnsLogResultContainingLogId(){
+    public void createNewLogReturnsLogResultContainingLogId() {
 
         when(crawlerLogRepository.nextLogId()).thenReturn(LogId.newLogId("123"));
-        when(crawlerLogRepository.findAllBySpec(any())).thenReturn(Stream.empty());
+        when(crawlerLogRepository.findAllUnfinishedForSourceUrl(any())).thenReturn(Collections.emptyList());
 
         CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.newUrl("urlToScan"));
 
@@ -58,10 +59,10 @@ public class CrawlerLogServiceTest {
     }
 
     @Test
-    public void createNewLogReturnsFlagSetIfLogWithSourceUrlAlreadyExists(){
+    public void createNewLogReturnsFlagSetIfLogWithSourceUrlAlreadyExists() {
 
         when(crawlerLogRepository.nextLogId()).thenReturn(LogId.newLogId("irrelevant"));
-        when(crawlerLogRepository.findAllBySpec(any())).thenReturn(Stream.of(CrawlerLog.newCrawlerLog(LogId.newLogId("any") , SourceUrl.newUrl("any"))));
+        when(crawlerLogRepository.findAllUnfinishedForSourceUrl(any())).thenReturn(Arrays.asList(CrawlerLog.newCrawlerLog(LogId.newLogId("any"), SourceUrl.newUrl("any"))));
 
         CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.newUrl("any"));
 
@@ -71,7 +72,7 @@ public class CrawlerLogServiceTest {
 
 
     @Test
-    public void addsListOfFamousPeopleToLog(){
+    public void addsListOfFamousPeopleToLog() {
 
         CrawlerLog existingLog = mock(CrawlerLog.class);
         when(crawlerLogRepository.findById(any())).thenReturn(Optional.ofNullable(existingLog));
@@ -86,7 +87,7 @@ public class CrawlerLogServiceTest {
     }
 
     @Test
-    public void marksCrawlerLogAsCompleted(){
+    public void marksCrawlerLogAsCompleted() {
 
         CrawlerLog existingCrawlerLog = mock(CrawlerLog.class);
         when(crawlerLogRepository.findById(any())).thenReturn(Optional.ofNullable(existingCrawlerLog));
@@ -97,6 +98,18 @@ public class CrawlerLogServiceTest {
         verify(crawlerLogRepository).save(eq(existingCrawlerLog));
 
         verify(existingCrawlerLog).finish(eq(repositoryId));
+
+
+    }
+
+    @Test(expected = CrawlerLogNotFoundException.class)
+    public void logNotFoundExceptionShouldBeThrownIfTryingToFinishNonExistingLog() {
+
+        when(crawlerLogRepository.findById(any())).thenReturn(Optional.empty());
+
+        crawlerLogService.finishCrawlerLog(LogId.newLogId("irrelevant") , RepositoryId.newId("irrelevant"));
+
+        fail("CrawlerLogNotFoundException should be thrown");
 
 
     }
