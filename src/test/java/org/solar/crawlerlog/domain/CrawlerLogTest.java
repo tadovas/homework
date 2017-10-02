@@ -1,6 +1,5 @@
 package org.solar.crawlerlog.domain;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Before;
 import org.junit.Test;
 
