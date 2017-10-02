@@ -15,15 +15,15 @@ public class CrawlerLogTest {
     @Before
     public void beforeEach() {
 
-        crawlerLog = CrawlerLog.newCrawlerLog(LogId.newLogId("id") , SourceUrl.newUrl("url"));
+        crawlerLog = CrawlerLog.newCrawlerLog(LogId.fromString("id") , SourceUrl.fromString("url"));
     }
 
     @Test
     public void idAndSourceUrlShouldBePersisted() {
 
         assertThat(crawlerLog , allOf(
-                hasProperty("id" , equalTo(LogId.newLogId("id"))),
-                hasProperty("sourceUrl" , equalTo(SourceUrl.newUrl("url")))
+                hasProperty("id" , equalTo(LogId.fromString("id"))),
+                hasProperty("sourceUrl" , equalTo(SourceUrl.fromString("url")))
         ));
     }
 
@@ -44,16 +44,16 @@ public class CrawlerLogTest {
     @Test
     public void crawlerLogShoudBeFinished() {
 
-        crawlerLog.finish(RepositoryId.newId("repoId"));
+        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
 
         assertThat(crawlerLog.isFinished() , equalTo(true));
-        assertThat(crawlerLog.getRepositoryId() , equalTo(RepositoryId.newId("repoId")));
+        assertThat(crawlerLog.getRepositoryId() , equalTo(RemoteRepositoryId.fromString("repoId")));
     }
 
     @Test(expected = LogAlreadyFinishedException.class)
     public void shouldThrowLogAlreadyClosedExceptionWhenAddingCelebsOnClosedLog() {
 
-        crawlerLog.finish(RepositoryId.newId("repoId"));
+        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
         crawlerLog.addCelebrities(Arrays.asList(new Celebrity()));
 
         fail("LogAlreadyFinishedException expected");
@@ -62,8 +62,8 @@ public class CrawlerLogTest {
     @Test(expected = LogAlreadyFinishedException.class)
     public void shouldThrowLogAlreadyFinishedExceptionWhenFinishingAlreadyClosedLog() {
 
-        crawlerLog.finish(RepositoryId.newId("repoId"));
-        crawlerLog.finish(RepositoryId.newId("repoId"));
+        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
+        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
 
         fail("LogAlreadyFinishedException expected");
     }

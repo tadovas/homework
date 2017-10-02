@@ -35,14 +35,14 @@ public class ConcurrentHashMapRepositoryTest {
     @Test
     public void savedCrawlerLogShouldBeFoundById(){
 
-        concurrentHashMapRepository.save(CrawlerLog.newCrawlerLog(LogId.newLogId("id1") , SourceUrl.newUrl("url1")));
-        concurrentHashMapRepository.save(CrawlerLog.newCrawlerLog(LogId.newLogId("id2") , SourceUrl.newUrl("url2")));
+        concurrentHashMapRepository.save(CrawlerLog.newCrawlerLog(LogId.fromString("id1") , SourceUrl.fromString("url1")));
+        concurrentHashMapRepository.save(CrawlerLog.newCrawlerLog(LogId.fromString("id2") , SourceUrl.fromString("url2")));
 
-        Optional<CrawlerLog> foundLog = concurrentHashMapRepository.findById(LogId.newLogId("id1"));
+        Optional<CrawlerLog> foundLog = concurrentHashMapRepository.findById(LogId.fromString("id1"));
 
         assertThat(foundLog , isPresentAnd( allOf(
-                hasProperty("id" , equalTo(LogId.newLogId("id1"))),
-                hasProperty("sourceUrl" , equalTo(SourceUrl.newUrl("url1")))
+                hasProperty("id" , equalTo(LogId.fromString("id1"))),
+                hasProperty("sourceUrl" , equalTo(SourceUrl.fromString("url1")))
         )));
     }
 

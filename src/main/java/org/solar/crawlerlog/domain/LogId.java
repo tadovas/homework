@@ -13,7 +13,7 @@ public class LogId {
         return id;
     }
 
-    public static LogId newLogId(String value) {
+    public static LogId fromString(String value) {
         return new LogId(value);
     }
 

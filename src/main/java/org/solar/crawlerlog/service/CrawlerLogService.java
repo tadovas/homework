@@ -36,7 +36,7 @@ public class CrawlerLogService {
         findApplyAndSave(id , crawlerLog -> crawlerLog.addCelebrities(celebrities));
     }
 
-    public void finishCrawlerLog(LogId id, RepositoryId repositoryId) {
+    public void finishCrawlerLog(LogId id, RemoteRepositoryId repositoryId) {
 
         findApplyAndSave(id , crawlerLog -> crawlerLog.finish(repositoryId));
     }

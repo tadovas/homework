@@ -24,7 +24,7 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
     @Override
     public LogId nextLogId() {
 
-        return LogId.newLogId(UUID.randomUUID().toString());
+        return LogId.fromString(UUID.randomUUID().toString());
     }
 
     @Override

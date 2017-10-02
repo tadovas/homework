@@ -37,30 +37,30 @@ public class CrawlerLogServiceTest {
     @Test
     public void createNewLogReturnsLogResultContainingLogId() {
 
-        when(crawlerLogRepository.nextLogId()).thenReturn(LogId.newLogId("123"));
+        when(crawlerLogRepository.nextLogId()).thenReturn(LogId.fromString("123"));
         when(crawlerLogRepository.findAllUnfinishedForSourceUrl(any())).thenReturn(Collections.emptyList());
 
-        CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.newUrl("urlToScan"));
+        CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.fromString("urlToScan"));
 
-        assertThat(result.getLogId() , equalTo(LogId.newLogId("123")));
+        assertThat(result.getLogId() , equalTo(LogId.fromString("123")));
         assertThat(result.anotherLogExists() , equalTo(false));
 
         ArgumentCaptor<CrawlerLog> capturedLog = ArgumentCaptor.forClass(CrawlerLog.class);
         verify(crawlerLogRepository).save(capturedLog.capture());
 
         assertThat(capturedLog.getValue() , allOf(
-                hasProperty("id" , equalTo(LogId.newLogId("123"))),
-                hasProperty("sourceUrl" ,equalTo(SourceUrl.newUrl("urlToScan")))
+                hasProperty("id" , equalTo(LogId.fromString("123"))),
+                hasProperty("sourceUrl" ,equalTo(SourceUrl.fromString("urlToScan")))
         ));
     }
 
     @Test
     public void createNewLogReturnsFlagSetIfLogWithSourceUrlAlreadyExists() {
 
-        when(crawlerLogRepository.nextLogId()).thenReturn(LogId.newLogId("irrelevant"));
-        when(crawlerLogRepository.findAllUnfinishedForSourceUrl(any())).thenReturn(Arrays.asList(CrawlerLog.newCrawlerLog(LogId.newLogId("any"), SourceUrl.newUrl("any"))));
+        when(crawlerLogRepository.nextLogId()).thenReturn(LogId.fromString("irrelevant"));
+        when(crawlerLogRepository.findAllUnfinishedForSourceUrl(any())).thenReturn(Arrays.asList(CrawlerLog.newCrawlerLog(LogId.fromString("any"), SourceUrl.fromString("any"))));
 
-        CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.newUrl("any"));
+        CreationResult result = crawlerLogService.createNewCrawlerLog(SourceUrl.fromString("any"));
 
         assertThat(result.anotherLogExists() , equalTo(true));
 
@@ -75,7 +75,7 @@ public class CrawlerLogServiceTest {
 
 
         Collection<Celebrity> famousPeople = Collections.emptyList();
-        crawlerLogService.addFamousPersons( LogId.newLogId("irrelevant") , famousPeople);
+        crawlerLogService.addFamousPersons( LogId.fromString("irrelevant") , famousPeople);
 
         verify(crawlerLogRepository).save(eq(existingLog));
 
@@ -88,8 +88,8 @@ public class CrawlerLogServiceTest {
         CrawlerLog existingCrawlerLog = mock(CrawlerLog.class);
         when(crawlerLogRepository.findById(any())).thenReturn(Optional.ofNullable(existingCrawlerLog));
 
-        RepositoryId repositoryId = RepositoryId.newId("RepoId");
-        crawlerLogService.finishCrawlerLog(LogId.newLogId("irrelevant") , repositoryId);
+        RemoteRepositoryId repositoryId = RemoteRepositoryId.fromString("RepoId");
+        crawlerLogService.finishCrawlerLog(LogId.fromString("irrelevant") , repositoryId);
 
         verify(crawlerLogRepository).save(eq(existingCrawlerLog));
 
@@ -103,7 +103,7 @@ public class CrawlerLogServiceTest {
 
         when(crawlerLogRepository.findById(any())).thenReturn(Optional.empty());
 
-        crawlerLogService.finishCrawlerLog(LogId.newLogId("irrelevant") , RepositoryId.newId("irrelevant"));
+        crawlerLogService.finishCrawlerLog(LogId.fromString("irrelevant") , RemoteRepositoryId.fromString("irrelevant"));
 
         fail("CrawlerLogNotFoundException should be thrown");
 

@@ -19,7 +19,7 @@ public class CrawlerLog {
     /**
      * Same as above - muating reference
      */
-    private volatile RepositoryId repositoryId = null;
+    private volatile RemoteRepositoryId repositoryId = null;
 
     private CrawlerLog(LogId id, SourceUrl sourceUrl) {
 
@@ -44,7 +44,7 @@ public class CrawlerLog {
         celebrityList.addAll(celebrities);
     }
 
-    public void finish(RepositoryId repositoryId) {
+    public void finish(RemoteRepositoryId repositoryId) {
 
         ensureNotFinished();
         this.repositoryId = repositoryId;
@@ -58,7 +58,7 @@ public class CrawlerLog {
         return sourceUrl;
     }
 
-    public RepositoryId getRepositoryId() {
+    public RemoteRepositoryId getRepositoryId() {
         return repositoryId;
     }
 

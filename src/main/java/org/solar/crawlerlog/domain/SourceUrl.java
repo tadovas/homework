@@ -15,7 +15,7 @@ public class SourceUrl {
     }
 
 
-    public static SourceUrl newUrl(String value) {
+    public static SourceUrl fromString(String value) {
 
         return new SourceUrl(value);
     }

@@ -1,16 +1,16 @@
 package org.solar.crawlerlog.domain;
 
-public class RepositoryId {
+public class RemoteRepositoryId {
 
     private String id;
 
-    private RepositoryId(String repoId) {
+    private RemoteRepositoryId(String repoId) {
         this.id = repoId;
     }
 
 
-    public static RepositoryId newId(String repoId) {
-        return new RepositoryId(repoId);
+    public static RemoteRepositoryId fromString(String repoId) {
+        return new RemoteRepositoryId(repoId);
     }
 
 
@@ -24,7 +24,7 @@ public class RepositoryId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RepositoryId that = (RepositoryId) o;
+        RemoteRepositoryId that = (RemoteRepositoryId) o;
 
         return id.equals(that.id);
     }
