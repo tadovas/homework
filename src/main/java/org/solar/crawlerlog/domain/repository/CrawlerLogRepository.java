@@ -17,4 +17,8 @@ public interface CrawlerLogRepository {
     Optional<CrawlerLog> findById(LogId logId);
 
     Collection<CrawlerLog> findAllUnfinishedForSourceUrl(SourceUrl url);
+
+    Collection<CrawlerLog> findAllUnfinished();
+
+    Collection<CrawlerLog> findAllFinishedWithMatchingSourceUrl(String value);
 }

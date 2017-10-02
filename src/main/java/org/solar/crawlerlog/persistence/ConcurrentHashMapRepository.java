@@ -51,6 +51,16 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
         );
     }
 
+    @Override
+    public Collection<CrawlerLog> findAllUnfinished() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<CrawlerLog> findAllFinishedWithMatchingSourceUrl(String value) {
+        return Collections.emptyList();
+    }
+
     private Collection<CrawlerLog> queryByPredicate(Predicate<CrawlerLog> predicate){
         return crawlerLogMap.values().stream()
                 .filter(predicate)
