@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.domain;
+package org.solar.crawlerlog.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotBlank;

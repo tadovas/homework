@@ -1,9 +1,9 @@
 package org.solar.crawlerlog.web.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.solar.crawlerlog.domain.Celebrity;
-import org.solar.crawlerlog.domain.CrawlerLog;
-import org.solar.crawlerlog.domain.RemoteRepositoryId;
+import org.solar.crawlerlog.domain.model.Celebrity;
+import org.solar.crawlerlog.domain.model.CrawlerLog;
+import org.solar.crawlerlog.domain.model.RemoteRepositoryId;
 import org.solar.crawlerlog.web.api.lifecycle.CrawlerLogController;
 import org.springframework.hateoas.Resource;
 

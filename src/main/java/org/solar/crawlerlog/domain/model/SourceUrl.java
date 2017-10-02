@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.domain;
+package org.solar.crawlerlog.domain.model;
 
 public class SourceUrl {
 

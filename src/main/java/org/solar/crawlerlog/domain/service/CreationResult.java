@@ -1,7 +1,7 @@
-package org.solar.crawlerlog.service;
+package org.solar.crawlerlog.domain.service;
 
 
-import org.solar.crawlerlog.domain.LogId;
+import org.solar.crawlerlog.domain.model.LogId;
 
 public class CreationResult {
 

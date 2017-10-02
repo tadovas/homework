@@ -3,7 +3,7 @@ package org.solar.crawlerlog.web.api.lifecycle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.solar.crawlerlog.domain.SourceUrl;
+import org.solar.crawlerlog.domain.model.SourceUrl;
 
 public class NewLogRequest {
 

@@ -1,14 +1,17 @@
 package org.solar.crawlerlog.persistence;
 
-import org.solar.crawlerlog.domain.*;
+import org.solar.crawlerlog.domain.model.CrawlerLog;
+import org.solar.crawlerlog.domain.model.LogId;
+import org.solar.crawlerlog.domain.model.SourceUrl;
+import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-
-import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
+import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.hasSourceUrl;
+import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.notFinished;
 
 
 /**
@@ -19,7 +22,7 @@ import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
  */
 public class ConcurrentHashMapRepository implements CrawlerLogRepository {
 
-    private Map<LogId , CrawlerLog> crawlerLogMap = new ConcurrentHashMap<>();
+    private Map<LogId, CrawlerLog> crawlerLogMap = new ConcurrentHashMap<>();
 
     @Override
     public LogId nextLogId() {

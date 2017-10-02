@@ -1,9 +1,10 @@
-package org.solar.crawlerlog.service;
+package org.solar.crawlerlog.domain.service;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.solar.crawlerlog.domain.*;
+import org.solar.crawlerlog.domain.model.*;
+import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
 
 import java.util.Arrays;
 import java.util.Collection;

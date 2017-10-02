@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.service;
+package org.solar.crawlerlog.domain.service;
 
 public class CrawlerLogNotFoundException extends RuntimeException{
 

@@ -2,9 +2,9 @@ package org.solar.crawlerlog.persistence;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.solar.crawlerlog.domain.CrawlerLog;
-import org.solar.crawlerlog.domain.LogId;
-import org.solar.crawlerlog.domain.SourceUrl;
+import org.solar.crawlerlog.domain.model.CrawlerLog;
+import org.solar.crawlerlog.domain.model.LogId;
+import org.solar.crawlerlog.domain.model.SourceUrl;
 
 import java.util.Optional;
 

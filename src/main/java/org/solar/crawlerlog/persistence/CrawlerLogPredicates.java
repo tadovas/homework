@@ -1,8 +1,11 @@
-package org.solar.crawlerlog.domain;
+package org.solar.crawlerlog.persistence;
+
+import org.solar.crawlerlog.domain.model.CrawlerLog;
+import org.solar.crawlerlog.domain.model.SourceUrl;
 
 import java.util.function.Predicate;
 
-public final class CrawlerLogPredicates {
+final class CrawlerLogPredicates {
 
     private CrawlerLogPredicates(){}
 

@@ -1,7 +1,8 @@
-package org.solar.crawlerlog.service;
+package org.solar.crawlerlog.domain.service;
 
 
-import org.solar.crawlerlog.domain.*;
+import org.solar.crawlerlog.domain.model.*;
+import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

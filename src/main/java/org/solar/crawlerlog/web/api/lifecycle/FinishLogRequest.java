@@ -2,7 +2,7 @@ package org.solar.crawlerlog.web.api.lifecycle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotBlank;
-import org.solar.crawlerlog.domain.RemoteRepositoryId;
+import org.solar.crawlerlog.domain.model.RemoteRepositoryId;
 
 public class FinishLogRequest {
 

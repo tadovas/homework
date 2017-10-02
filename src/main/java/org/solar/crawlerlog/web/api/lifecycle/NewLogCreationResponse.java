@@ -1,7 +1,7 @@
 package org.solar.crawlerlog.web.api.lifecycle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.solar.crawlerlog.service.CreationResult;
+import org.solar.crawlerlog.domain.service.CreationResult;
 import java.util.Collections;
 import java.util.List;
 

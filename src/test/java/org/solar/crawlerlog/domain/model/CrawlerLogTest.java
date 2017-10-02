@@ -1,8 +1,8 @@
-package org.solar.crawlerlog.domain;
+package org.solar.crawlerlog.domain.model;
 
-import com.github.npathai.hamcrestopt.OptionalMatchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.solar.crawlerlog.domain.model.*;
 
 import java.util.Arrays;
 
