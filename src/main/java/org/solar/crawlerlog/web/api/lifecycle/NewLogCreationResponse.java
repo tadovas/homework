@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.web;
+package org.solar.crawlerlog.web.api.lifecycle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.solar.crawlerlog.service.CreationResult;

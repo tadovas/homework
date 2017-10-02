@@ -1,9 +1,10 @@
-package org.solar.crawlerlog.web;
+package org.solar.crawlerlog.web.api.lifecycle;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.solar.crawlerlog.domain.LogId;
 import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
+import org.solar.crawlerlog.web.api.CrawlerLogView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
