@@ -2,6 +2,7 @@ package org.solar.crawlerlog.domain;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CrawlerLog {
@@ -58,8 +59,8 @@ public class CrawlerLog {
         return sourceUrl;
     }
 
-    public RemoteRepositoryId getRepositoryId() {
-        return repositoryId;
+    public Optional<RemoteRepositoryId> getRepositoryId() {
+        return Optional.ofNullable(repositoryId);
     }
 
     public Collection<Celebrity> getCelebrities() {

@@ -42,7 +42,7 @@ public class CrawlerLogControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON).content("{  \"sourceUrl\" : \"test-url\"  }"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location" , equalTo("/crawler-logs/123")))
+                .andExpect(header().string("Location" , equalTo("http://localhost/crawler-logs/123")))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.warnings" , hasSize(1)))
                 .andExpect(jsonPath("$.warnings[0].code" , is("W01")))

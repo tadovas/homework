@@ -1,8 +1,11 @@
 package org.solar.crawlerlog.web;
 
+import org.solar.crawlerlog.domain.LogId;
 import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkBuilder;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @RestController
 @RequestMapping(value = "/crawler-logs" ,
@@ -29,7 +34,14 @@ public class CrawlerLogController {
 
         CreationResult creationResult = crawlerLogService.createNewCrawlerLog(logRequest.getSourceUrl());
 
-        return ResponseEntity.created(new URI("/crawler-logs/123")).body( new Resource<>(new NewLogCreationResponse(creationResult)));
+        URI crawlerLogUri = linkTo(methodOn(CrawlerLogController.class).getCrawlerLogById(creationResult.getLogId().toString())).toUri();
+
+        return ResponseEntity.created(crawlerLogUri).body( new Resource<>(new NewLogCreationResponse(creationResult)));
+    }
+
+    @GetMapping(path = "/{id}")
+    public Resource<CrawlerLogView> getCrawlerLogById(@PathVariable("id")  String id) {
+        return CrawlerLogView.fromCrawlerLog(crawlerLogService.findCrawlerLogById(LogId.fromString(id)));
     }
 
 }

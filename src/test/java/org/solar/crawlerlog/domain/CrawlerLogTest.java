@@ -1,10 +1,12 @@
 package org.solar.crawlerlog.domain;
 
+import com.github.npathai.hamcrestopt.OptionalMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -47,7 +49,7 @@ public class CrawlerLogTest {
         crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
 
         assertThat(crawlerLog.isFinished() , equalTo(true));
-        assertThat(crawlerLog.getRepositoryId() , equalTo(RemoteRepositoryId.fromString("repoId")));
+        assertThat(crawlerLog.getRepositoryId() , isPresentAnd(equalTo(RemoteRepositoryId.fromString("repoId"))));
     }
 
     @Test(expected = LogAlreadyFinishedException.class)

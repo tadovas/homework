@@ -42,13 +42,20 @@ public class CrawlerLogService {
     }
 
 
+    private CrawlerLog findOrThrowException(LogId id) {
+        return repository.findById(id).orElseThrow(() -> new CrawlerLogNotFoundException("Log not found with id: " + id));
+    }
+
     private void findApplyAndSave(LogId id , Consumer<CrawlerLog> crawlerLogConsumer) {
 
-        CrawlerLog log = repository.findById(id).orElseThrow(() -> new CrawlerLogNotFoundException("Log not found with id: " + id));
+        CrawlerLog log = findOrThrowException(id);
         crawlerLogConsumer.accept(log);
         repository.save(log);
     }
 
+    public CrawlerLog findCrawlerLogById(LogId id) {
+        return findOrThrowException(id);
+    }
 }
 
 
