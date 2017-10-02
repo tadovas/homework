@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.repository;
+package org.solar.crawlerlog.persistence;
 
 
 import org.junit.Before;

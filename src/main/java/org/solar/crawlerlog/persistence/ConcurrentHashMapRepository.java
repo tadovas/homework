@@ -1,4 +1,4 @@
-package org.solar.crawlerlog.repository;
+package org.solar.crawlerlog.persistence;
 
 import org.solar.crawlerlog.domain.*;
 
@@ -12,8 +12,8 @@ import static org.solar.crawlerlog.domain.CrawlerLogPredicates.*;
 
 
 /**
- *   This in-memory repository implementation approach is a bit naive as we break
- *   semantics of real repository when saving and returning persisted objects
+ *   This in-memory persistence implementation approach is a bit naive as we break
+ *   semantics of real persistence when saving and returning persisted objects
  *   they are stored and retrieved as references instead of full copies like real persistence storages do.
  *   Therefore objects which we are persisting should be aware of possible concurrent access and it's not very cool :(
  */
