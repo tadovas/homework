@@ -1,7 +1,7 @@
 package org.solar.crawlerlog.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class Celebrity {
 
@@ -12,11 +12,11 @@ public class Celebrity {
      */
 
     @JsonProperty
-    @NotEmpty
+    @NotBlank
     private String name;
 
     @JsonProperty
-    @NotEmpty
+    @NotBlank
     private String occupation;
 
 

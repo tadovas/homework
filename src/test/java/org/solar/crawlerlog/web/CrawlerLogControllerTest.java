@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URI;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
@@ -72,7 +73,11 @@ public class CrawlerLogControllerTest {
                 .andExpect(jsonPath("$.celebrities", hasSize(2)))
                 .andExpect(jsonPath("$.celebrities[0].name", equalTo("Arnold")))
                 .andExpect(jsonPath("$.celebrities[0].occupation", equalTo("actor")))
-                .andExpect(jsonPath("$.links", hasSize(3)));
+                .andExpect(jsonPath("$.links", hasSize(3)))
+                .andExpect(jsonPath("$.links[?(@.rel=='self')].href" , hasItem("http://localhost/crawler-logs/123")))
+                .andExpect(jsonPath("$.links[?(@.rel=='celebrities')].href" , hasItem("http://localhost/crawler-logs/123/celebrities")))
+                .andExpect(jsonPath("$.links[?(@.rel=='repository')].href" , hasItem("http://localhost/crawler-logs/123/repository")));
+
 
         assertThat(logIdArgCaptor.getValue(), equalTo(LogId.fromString("123")));
     }

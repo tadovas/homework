@@ -6,6 +6,7 @@ import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,4 +42,15 @@ public class CrawlerLogController {
         return CrawlerLogView.fromCrawlerLog(crawlerLogService.findCrawlerLogById(LogId.fromString(id)));
     }
 
+    @PostMapping(path = "/{id}/celebrities" , consumes = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<?> addCelebritiesToLog(@PathVariable("id") @NotEmpty String id , @RequestBody @Validated AddCelebritiesRequest request) {
+
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping(path = "/{id}/repository" , consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> finishLog(@PathVariable("id") @NotEmpty String id , @RequestBody @Validated FinishLogRequest request) {
+
+        return ResponseEntity.accepted().build();
+    }
 }

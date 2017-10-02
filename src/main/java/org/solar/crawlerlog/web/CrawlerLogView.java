@@ -36,10 +36,15 @@ public class CrawlerLogView {
 
         Resource<CrawlerLogView> crawlerLogViewResource = new Resource<>(new CrawlerLogView(crawlerLog));
 
-        crawlerLogViewResource.add(linkTo(methodOn(CrawlerLogController.class).getCrawlerLogById(crawlerLog.getId().toString())).withSelfRel());
+        String logIdAsString = crawlerLog.getId().toString();
+
+        crawlerLogViewResource.add(linkTo(methodOn(CrawlerLogController.class).getCrawlerLogById(logIdAsString)).withSelfRel());
 
         if(! crawlerLog.isFinished()) {
-
+            crawlerLogViewResource.add( linkTo( methodOn(CrawlerLogController.class)
+                    .addCelebritiesToLog(logIdAsString , null)).withRel("celebrities"));
+            crawlerLogViewResource.add( linkTo( methodOn(CrawlerLogController.class)
+                    .finishLog( logIdAsString , null)).withRel("repository"));
         }
         return crawlerLogViewResource;
     }
