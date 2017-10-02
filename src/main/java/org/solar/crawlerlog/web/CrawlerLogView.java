@@ -13,6 +13,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 public class CrawlerLogView {
 
     @JsonProperty
+    private String id;
+
+    @JsonProperty
     private Collection<Celebrity> celebrities;
 
     @JsonProperty
@@ -23,6 +26,7 @@ public class CrawlerLogView {
 
     private CrawlerLogView(CrawlerLog crawlerLog) {
 
+        this.id = crawlerLog.getId().toString();
         this.celebrities = crawlerLog.getCelebrities();
         this.finished = crawlerLog.isFinished();
         this.repository = crawlerLog.getRepositoryId().map(RemoteRepositoryId::toString).orElse(null);

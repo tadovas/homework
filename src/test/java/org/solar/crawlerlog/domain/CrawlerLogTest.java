@@ -32,8 +32,8 @@ public class CrawlerLogTest {
     @Test
     public void celebrityListShouldBePersisted() {
 
-        Celebrity celeb1 = new Celebrity();
-        Celebrity celeb2 = new Celebrity();
+        Celebrity celeb1 = new Celebrity("Arnold", "actor");
+        Celebrity celeb2 = new Celebrity("Elton", "singer");
 
         crawlerLog.addCelebrities(Arrays.asList(celeb1));
         crawlerLog.addCelebrities(Arrays.asList(celeb2));
@@ -56,7 +56,7 @@ public class CrawlerLogTest {
     public void shouldThrowLogAlreadyClosedExceptionWhenAddingCelebsOnClosedLog() {
 
         crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
-        crawlerLog.addCelebrities(Arrays.asList(new Celebrity()));
+        crawlerLog.addCelebrities(Arrays.asList(new Celebrity("Arnold", "actor")));
 
         fail("LogAlreadyFinishedException expected");
     }

@@ -3,6 +3,8 @@ package org.solar.crawlerlog.web;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.solar.crawlerlog.domain.Celebrity;
+import org.solar.crawlerlog.domain.CrawlerLog;
 import org.solar.crawlerlog.domain.LogId;
 import org.solar.crawlerlog.domain.SourceUrl;
 import org.solar.crawlerlog.service.CrawlerLogService;
@@ -14,9 +16,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,6 +54,35 @@ public class CrawlerLogControllerTest {
                 .andExpect(jsonPath("$.warnings[0].message" , not(isEmptyString())));
 
         assertThat(sourceUrlCaptor.getValue() , equalTo(SourceUrl.fromString("test-url")));
+    }
+
+    @Test
+    public void shouldReturnFoundCrawlerLogWithRequiredLinksWhenFoundInRepository() throws Exception {
+
+        ArgumentCaptor<LogId> logIdArgCaptor = ArgumentCaptor.forClass(LogId.class);
+        when(crawlerLogService.findCrawlerLogById(logIdArgCaptor.capture())).thenReturn(createTestCrawlerLog());
+
+        mockMvc.perform(
+                get("/crawler-logs/{id}" , "123")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", equalTo("123")))
+                .andExpect(jsonPath("finished", equalTo(false) ))
+                .andExpect(jsonPath("$.celebrities", hasSize(2)))
+                .andExpect(jsonPath("$.celebrities[0].name", equalTo("Arnold")))
+                .andExpect(jsonPath("$.celebrities[0].occupation", equalTo("actor")))
+                .andExpect(jsonPath("$.links", hasSize(3)));
+
+        assertThat(logIdArgCaptor.getValue(), equalTo(LogId.fromString("123")));
+    }
+
+    private CrawlerLog createTestCrawlerLog() {
+        CrawlerLog log = CrawlerLog.newCrawlerLog(LogId.fromString("123") , SourceUrl.fromString("test-url"));
+        log.addCelebrities(Arrays.asList(
+                new Celebrity("Arnold", "actor"),
+                new Celebrity("Elton", "singer")));
+        return log;
     }
 
 

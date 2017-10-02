@@ -1,11 +1,10 @@
 package org.solar.crawlerlog.web;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.solar.crawlerlog.domain.LogId;
 import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.LinkBuilder;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +16,7 @@ import java.net.URI;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @RestController
-@RequestMapping(value = "/crawler-logs" ,
-        produces = MediaType.APPLICATION_JSON_VALUE ,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/crawler-logs" , produces = MediaType.APPLICATION_JSON_VALUE )
 public class CrawlerLogController {
 
     private CrawlerLogService crawlerLogService;
@@ -29,7 +26,7 @@ public class CrawlerLogController {
         this.crawlerLogService = crawlerLogService;
     }
 
-    @PostMapping
+    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNewCrawlerLog(@RequestBody @Validated NewLogRequest logRequest) throws Exception {
 
         CreationResult creationResult = crawlerLogService.createNewCrawlerLog(logRequest.getSourceUrl());
@@ -40,7 +37,7 @@ public class CrawlerLogController {
     }
 
     @GetMapping(path = "/{id}")
-    public Resource<CrawlerLogView> getCrawlerLogById(@PathVariable("id")  String id) {
+    public Resource<CrawlerLogView> getCrawlerLogById(@PathVariable("id") @NotEmpty String id) {
         return CrawlerLogView.fromCrawlerLog(crawlerLogService.findCrawlerLogById(LogId.fromString(id)));
     }
 
