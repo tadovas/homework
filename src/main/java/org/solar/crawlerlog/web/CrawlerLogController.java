@@ -45,12 +45,14 @@ public class CrawlerLogController {
     @PostMapping(path = "/{id}/celebrities" , consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<?> addCelebritiesToLog(@PathVariable("id") @NotEmpty String id , @RequestBody @Validated AddCelebritiesRequest request) {
 
+        crawlerLogService.addCelebrities(LogId.fromString(id) , request.getCelebrities());
         return ResponseEntity.accepted().build();
     }
 
     @PutMapping(path = "/{id}/repository" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> finishLog(@PathVariable("id") @NotEmpty String id , @RequestBody @Validated FinishLogRequest request) {
 
+        
         return ResponseEntity.accepted().build();
     }
 }

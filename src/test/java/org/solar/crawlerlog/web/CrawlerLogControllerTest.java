@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -80,6 +81,31 @@ public class CrawlerLogControllerTest {
 
 
         assertThat(logIdArgCaptor.getValue(), equalTo(LogId.fromString("123")));
+    }
+
+    @Test
+    public void shouldAddListOfCelebritiesToExistingLog() throws Exception {
+
+        mockMvc.perform(
+                post("/crawler-logs/123/celebrities")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON).content(
+                        "{ \"celebrities\" : [ " +
+                            "{ \"name\" : \"Arnold\" , \"occupation\" : \"actor\" }," +
+                            "{ \"name\" : \"Elton\" , \"occupation\" : \"singer\" }" +
+                        "]}"))
+                .andExpect(status().isAccepted());
+
+        ArgumentCaptor<List<Celebrity>> celebritiesCaptor = ArgumentCaptor.forClass((Class)List.class);
+        ArgumentCaptor<LogId> logIdCaptor = ArgumentCaptor.forClass(LogId.class);
+        verify(crawlerLogService).addCelebrities(logIdCaptor.capture() , celebritiesCaptor.capture());
+
+        assertThat(logIdCaptor.getValue() , equalTo(LogId.fromString("123")));
+        assertThat(celebritiesCaptor.getValue() , hasItems(
+                hasProperty("name", equalTo("Arnold")),
+                hasProperty("name", equalTo("Elton"))
+        ));
+
     }
 
     private CrawlerLog createTestCrawlerLog() {

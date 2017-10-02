@@ -19,6 +19,8 @@ public class Celebrity {
     @NotBlank
     private String occupation;
 
+    //for jackson
+    private Celebrity() {}
 
     public Celebrity(String name, String occupation) {
         this.name = name;
