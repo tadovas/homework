@@ -3,10 +3,8 @@ package org.solar.crawlerlog.web;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.solar.crawlerlog.domain.Celebrity;
-import org.solar.crawlerlog.domain.CrawlerLog;
-import org.solar.crawlerlog.domain.LogId;
-import org.solar.crawlerlog.domain.SourceUrl;
+import org.solar.crawlerlog.domain.*;
+import org.solar.crawlerlog.service.CrawlerLogNotFoundException;
 import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -108,6 +107,25 @@ public class CrawlerLogControllerTest {
 
     }
 
+    @Test
+    public void putRequestToRepositoryResourceShouldFinishCrawlerLog() throws Exception {
+
+        mockMvc.perform(
+                put("/crawler-logs/123/repository")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON).content("{" +
+                            " \"repositoryId\" : \"remoteRepoId\" " +
+                        "}"))
+                .andExpect(status().isAccepted());
+
+        ArgumentCaptor<LogId> logIdCaptor = ArgumentCaptor.forClass(LogId.class);
+        ArgumentCaptor<RemoteRepositoryId> repoIdCaptor = ArgumentCaptor.forClass(RemoteRepositoryId.class);
+        verify(crawlerLogService).finishCrawlerLog(logIdCaptor.capture() , repoIdCaptor.capture());
+
+        assertThat(logIdCaptor.getValue() , equalTo(LogId.fromString("123")));
+        assertThat(repoIdCaptor.getValue() , equalTo(RemoteRepositoryId.fromString("remoteRepoId")));
+    }
+
     private CrawlerLog createTestCrawlerLog() {
         CrawlerLog log = CrawlerLog.newCrawlerLog(LogId.fromString("123") , SourceUrl.fromString("test-url"));
         log.addCelebrities(Arrays.asList(
@@ -116,5 +134,32 @@ public class CrawlerLogControllerTest {
         return log;
     }
 
+    @Test
+    public void anyActionOnNonExistentLogReturns404Error() throws Exception {
 
+        doThrow(new CrawlerLogNotFoundException("Irrelevant")).when(crawlerLogService).finishCrawlerLog(any(), any());
+
+        mockMvc.perform(
+                put("/crawler-logs/123/repository")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"repositoryId\" : \"irrelevant\"}"))
+                .andExpect(status().isNotFound());
+
+        verify(crawlerLogService).finishCrawlerLog(any(), any());
+    }
+
+    @Test
+    public void anyModificationOnFinishedLogShouldProduce409Error() throws Exception {
+        doThrow(new LogAlreadyFinishedException("Irrelevant")).when(crawlerLogService).finishCrawlerLog(any(), any());
+
+        mockMvc.perform(
+                put("/crawler-logs/123/repository")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"repositoryId\" : \"irrelevant\"}"))
+                .andExpect(status().isConflict());
+
+        verify(crawlerLogService).finishCrawlerLog(any(), any());
+    }
 }

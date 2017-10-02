@@ -10,7 +10,7 @@ public class FinishLogRequest {
     @NotBlank
     private String repositoryId;
 
-    public RemoteRepositoryId getSourceUrl() {
+    public RemoteRepositoryId getRemoteRepositoryId() {
         return RemoteRepositoryId.fromString(repositoryId);
     }
 }

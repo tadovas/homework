@@ -6,7 +6,6 @@ import org.solar.crawlerlog.service.CrawlerLogService;
 import org.solar.crawlerlog.service.CreationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -52,7 +51,7 @@ public class CrawlerLogController {
     @PutMapping(path = "/{id}/repository" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> finishLog(@PathVariable("id") @NotEmpty String id , @RequestBody @Validated FinishLogRequest request) {
 
-        
+        crawlerLogService.finishCrawlerLog(LogId.fromString(id), request.getRemoteRepositoryId());
         return ResponseEntity.accepted().build();
     }
 }
