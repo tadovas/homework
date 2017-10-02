@@ -75,7 +75,7 @@ public class CrawlerLogServiceTest {
 
 
         Collection<Celebrity> famousPeople = Collections.emptyList();
-        crawlerLogService.addFamousPersons( LogId.fromString("irrelevant") , famousPeople);
+        crawlerLogService.addCelebrities( LogId.fromString("irrelevant") , famousPeople);
 
         verify(crawlerLogRepository).save(eq(existingLog));
 
