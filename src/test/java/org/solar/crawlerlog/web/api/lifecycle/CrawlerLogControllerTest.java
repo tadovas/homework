@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.solar.crawlerlog.domain.model.*;
-import org.solar.crawlerlog.domain.service.CrawlerLogNotFoundException;
-import org.solar.crawlerlog.domain.service.CrawlerLogService;
-import org.solar.crawlerlog.domain.service.CreationResult;
+import org.solar.crawlerlog.domain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -94,7 +92,7 @@ public class CrawlerLogControllerTest {
                         "]}"))
                 .andExpect(status().isAccepted());
 
-        ArgumentCaptor<List<Celebrity>> celebritiesCaptor = ArgumentCaptor.forClass((Class)List.class);
+        ArgumentCaptor<List<Celebrity>> celebritiesCaptor = celebrityCaptor();
         ArgumentCaptor<LogId> logIdCaptor = ArgumentCaptor.forClass(LogId.class);
         verify(crawlerLogService).addCelebrities(logIdCaptor.capture() , celebritiesCaptor.capture());
 
@@ -125,14 +123,6 @@ public class CrawlerLogControllerTest {
         assertThat(repoIdCaptor.getValue() , equalTo(RemoteRepositoryId.fromString("remoteRepoId")));
     }
 
-    private CrawlerLog createTestCrawlerLog() {
-        CrawlerLog log = CrawlerLog.newCrawlerLog(LogId.fromString("123") , SourceUrl.fromString("test-url"));
-        log.addCelebrities(Arrays.asList(
-                new Celebrity("Arnold", "actor"),
-                new Celebrity("Elton", "singer")));
-        return log;
-    }
-
     @Test
     public void anyActionOnNonExistentLogReturns404Error() throws Exception {
 
@@ -160,5 +150,23 @@ public class CrawlerLogControllerTest {
                 .andExpect(status().isConflict());
 
         verify(crawlerLogService).finishCrawlerLog(any(), any());
+    }
+
+
+    /**
+     * Unfortunatelly ArgumentCaptor does not support capturing generic lists very nicely,
+     * adding a little workaround
+     */
+    @SuppressWarnings("unchecked")
+    private ArgumentCaptor<List<Celebrity>> celebrityCaptor() {
+        return ArgumentCaptor.forClass((Class)List.class);
+    }
+
+    private CrawlerLog createTestCrawlerLog() {
+        CrawlerLog log = CrawlerLog.newCrawlerLog(LogId.fromString("123") , SourceUrl.fromString("test-url"));
+        log.addCelebrities(Arrays.asList(
+                new Celebrity("Arnold", "actor"),
+                new Celebrity("Elton", "singer")));
+        return log;
     }
 }

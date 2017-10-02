@@ -14,6 +14,15 @@ public class SourceUrl {
         return url;
     }
 
+    public boolean equalsIgnoringCase(SourceUrl anotherUrl) {
+
+        return this.url.equalsIgnoreCase(anotherUrl.url);
+    }
+
+    public boolean matchesPartially(String value) {
+
+        return this.url.contains(value);
+    }
 
     public static SourceUrl fromString(String value) {
 

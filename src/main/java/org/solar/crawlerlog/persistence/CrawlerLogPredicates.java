@@ -9,15 +9,15 @@ final class CrawlerLogPredicates {
 
     private CrawlerLogPredicates(){}
 
-    public static Predicate<CrawlerLog> hasSourceUrl(SourceUrl url) {
-        return (crawlerLog -> crawlerLog.getSourceUrl().equals(url));
+    static Predicate<CrawlerLog> hasSourceUrl(SourceUrl url) {
+        return (crawlerLog -> crawlerLog.getSourceUrl().equalsIgnoringCase(url));
     }
 
-    public static Predicate<CrawlerLog> finished(){
+    static Predicate<CrawlerLog> finished(){
         return CrawlerLog::isFinished;
     }
 
-    public static Predicate<CrawlerLog> notFinished(){
+    static Predicate<CrawlerLog> notFinished(){
         return finished().negate();
     }
 }
