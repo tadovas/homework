@@ -20,4 +20,8 @@ final class CrawlerLogPredicates {
     static Predicate<CrawlerLog> notFinished(){
         return finished().negate();
     }
+
+    static Predicate<CrawlerLog> sourceUrlContains(String value) {
+        return crawlerLog -> crawlerLog.getSourceUrl().matchesPartially(value);
+    }
 }

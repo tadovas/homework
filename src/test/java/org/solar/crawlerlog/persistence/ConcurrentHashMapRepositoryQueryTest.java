@@ -32,8 +32,37 @@ public class ConcurrentHashMapRepositoryQueryTest {
 
         Collection<CrawlerLog> result = repository.findAllUnfinishedForSourceUrl(SourceUrl.fromString("url1"));
 
-        assertThat(result , hasItem( hasProperty("id" , equalTo(LogId.fromString("id1")))));
+        assertThat(result , contains( hasProperty("id" , equalTo(LogId.fromString("id1")))));
 
+    }
+
+    @Test
+    public void shouldReturnAllUnfinishedJobs() {
+
+        repository.save(createFinishedLog("1" , "url1"));
+        repository.save(createUnfinishedLog("2" , "url2"));
+        repository.save(createUnfinishedLog("3", "url3"));
+
+        Collection<CrawlerLog> result = repository.findAllUnfinished();
+
+        assertThat(result , containsInAnyOrder(
+                hasProperty("id" , equalTo(LogId.fromString("2"))),
+                hasProperty("id" , equalTo(LogId.fromString("3")))
+        ));
+    }
+
+    @Test
+    public void shouldReturnAllFinishedJobsMatchingUrl() {
+
+        repository.save(createUnfinishedLog("1" , "url2"));
+        repository.save(createFinishedLog("2" , "url2"));
+        repository.save(createFinishedLog("3", "url3"));
+
+        Collection<CrawlerLog> result = repository.findAllFinishedWithMatchingSourceUrl("rl2");
+
+        assertThat(result , contains(
+                hasProperty("id" , equalTo(LogId.fromString("2")))
+        ));
     }
 
 

@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.*;
 import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.hasSourceUrl;
 import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.notFinished;
 
@@ -53,12 +54,14 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
 
     @Override
     public Collection<CrawlerLog> findAllUnfinished() {
-        return Collections.emptyList();
+        return Collections.unmodifiableCollection(
+                queryByPredicate(notFinished()));
     }
 
     @Override
     public Collection<CrawlerLog> findAllFinishedWithMatchingSourceUrl(String value) {
-        return Collections.emptyList();
+        return Collections.unmodifiableCollection(
+                queryByPredicate(sourceUrlContains(value).and(finished())));
     }
 
     private Collection<CrawlerLog> queryByPredicate(Predicate<CrawlerLog> predicate){
