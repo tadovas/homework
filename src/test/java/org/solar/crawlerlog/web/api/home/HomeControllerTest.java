@@ -27,10 +27,12 @@ public class HomeControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.message" , not(isEmptyString())))
+                .andExpect(jsonPath("$.description" , not(isEmptyString())))
                 .andExpect(jsonPath("$.links[*].rel" , contains(
                         equalTo("crawler-logs"),
-                        equalTo("crawler-logs-search"))));
+                        equalTo("crawler-logs-search"),
+                        equalTo("Swagger-ui-human-eyes-only")
+                        )));
 
     }
 }

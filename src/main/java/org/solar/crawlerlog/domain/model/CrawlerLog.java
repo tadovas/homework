@@ -12,7 +12,7 @@ public class CrawlerLog {
     private SourceUrl sourceUrl;
 
     /**
-     * Because of our naive in memory implementation approach, persisted objects are not thread safe and might be shared
+     * Because of our naive in-memory repository implementation approach, persisted objects are not thread safe and might be shared
      * between threads (return reference not copy). @see {@link org.solar.crawlerlog.persistence.ConcurrentHashMapRepository}
      */
     private Collection<Celebrity> celebrityList = new ConcurrentLinkedQueue<>();

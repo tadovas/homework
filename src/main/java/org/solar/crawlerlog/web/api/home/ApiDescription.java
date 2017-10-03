@@ -6,9 +6,9 @@ import org.springframework.hateoas.ResourceSupport;
 class ApiDescription extends ResourceSupport {
 
     @JsonProperty
-    private String message;
+    private String description;
 
-    ApiDescription(String message) {
-        this.message = message;
+    ApiDescription(String description) {
+        this.description = description;
     }
 }

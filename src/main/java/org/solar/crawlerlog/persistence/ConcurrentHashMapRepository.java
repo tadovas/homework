@@ -4,6 +4,7 @@ import org.solar.crawlerlog.domain.model.CrawlerLog;
 import org.solar.crawlerlog.domain.model.LogId;
 import org.solar.crawlerlog.domain.model.SourceUrl;
 import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,7 @@ import static org.solar.crawlerlog.persistence.CrawlerLogPredicates.notFinished;
  *   they are stored and retrieved as references instead of full copies like real persistence storages do.
  *   Therefore objects which we are persisting should be aware of possible concurrent access and it's not very cool :(
  */
+@Repository
 public class ConcurrentHashMapRepository implements CrawlerLogRepository {
 
     private Map<LogId, CrawlerLog> crawlerLogMap = new ConcurrentHashMap<>();
