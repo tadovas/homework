@@ -1,7 +1,5 @@
 package org.solar.crawlerlog.web.api.home;
 
-
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -29,10 +27,10 @@ public class HomeControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.message" , Matchers.not(Matchers.isEmptyString())))
-                .andExpect(jsonPath("$.links[*].rel" , Matchers.contains(
-                        Matchers.equalTo("crawler-logs"),
-                        Matchers.equalTo("crawler-logs-search")))).andDo(print());
+                .andExpect(jsonPath("$.message" , not(isEmptyString())))
+                .andExpect(jsonPath("$.links[*].rel" , contains(
+                        equalTo("crawler-logs"),
+                        equalTo("crawler-logs-search"))));
 
     }
 }
