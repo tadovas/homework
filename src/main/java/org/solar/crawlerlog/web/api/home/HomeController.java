@@ -21,6 +21,8 @@ public class HomeController {
         apiDescription.add(linkTo(methodOn(CrawlerLogController.class).createNewCrawlerLog(null)).withRel("crawler-logs"));
         apiDescription.add(linkTo(CrawlerLogQueryController.class).withRel("crawler-logs-search"));
         apiDescription.add(BasicLinkBuilder.linkToCurrentMapping().slash("swagger-ui.html").withRel("Swagger-ui-human-eyes-only"));
+        apiDescription.add(BasicLinkBuilder.linkToCurrentMapping().slash("health").withRel("health"));
+        apiDescription.add(BasicLinkBuilder.linkToCurrentMapping().slash("metrics").withRel("metrics"));
         return apiDescription;
     }
 }

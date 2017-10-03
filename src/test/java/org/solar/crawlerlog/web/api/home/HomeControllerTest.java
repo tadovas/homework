@@ -31,7 +31,9 @@ public class HomeControllerTest {
                 .andExpect(jsonPath("$.links[*].rel" , contains(
                         equalTo("crawler-logs"),
                         equalTo("crawler-logs-search"),
-                        equalTo("Swagger-ui-human-eyes-only")
+                        equalTo("Swagger-ui-human-eyes-only"),
+                        equalTo("health"),
+                        equalTo("metrics")
                         )));
 
     }

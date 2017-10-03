@@ -72,4 +72,7 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
                 .collect(Collectors.toList());
     }
 
+    public int count() {
+        return crawlerLogMap.size();
+    }
 }
