@@ -1,5 +1,6 @@
 package org.solar.crawlerlog;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
@@ -65,6 +67,25 @@ public class CrawlerLogApplicationHappyPaths {
         response = get(crawlerSearchLink.getHref() + "?matchUrl={searchValue}" , UriUtils.encode("www.abc.lt" , "UTF-8"));
 
         assertThat(response.getStatusCode() , equalTo(HttpStatus.OK));
+    }
+
+    @Test
+    public void metricsEndpointShouldBeAvailable() {
+
+        ResponseEntity<Map> response = restClient.getForEntity("/metrics" , Map.class);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat((Map<String , Object>)response.getBody(), Matchers.hasEntry(equalTo("uptime") , notNullValue()));
+    }
+
+    @Test
+    public void healthEndpointShouldBeAvailable() {
+
+        ResponseEntity<Map> response = restClient.getForEntity("/health" , Map.class);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat((Map<String , Object>)response.getBody(), Matchers.hasEntry(equalTo("status") , notNullValue()));
+
     }
 
     private Object createFinishCrawlerLogRequest() {
