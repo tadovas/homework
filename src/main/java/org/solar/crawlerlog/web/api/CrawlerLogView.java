@@ -17,6 +17,9 @@ public class CrawlerLogView {
     private String id;
 
     @JsonProperty
+    private String sourceUrl;
+
+    @JsonProperty
     private Collection<Celebrity> celebrities;
 
     @JsonProperty
@@ -28,6 +31,7 @@ public class CrawlerLogView {
     private CrawlerLogView(CrawlerLog crawlerLog) {
 
         this.id = crawlerLog.getId().toString();
+        this.sourceUrl = crawlerLog.getSourceUrl().toString();
         this.celebrities = crawlerLog.getCelebrities();
         this.finished = crawlerLog.isFinished();
         this.repository = crawlerLog.getRepositoryId().map(RemoteRepositoryId::toString).orElse(null);
