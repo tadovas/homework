@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.util.UriUtils;
 
 
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,25 +51,26 @@ public class CrawlerLogQueryControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.content[*].id" , hasItems("1" , "2")));
+                .andExpect(jsonPath("$.content[*].id" , containsInAnyOrder("1" , "2")));
     }
 
     @Test
-    public void shouldReturnAllFinishedJobsFromRepo() throws Exception {
+    public void shouldReturnAllFinishedLogsFromRepoMatchingUrl() throws Exception {
 
         Mockito.when(repository.findAllFinishedWithMatchingSourceUrl(Mockito.any())).thenReturn(Arrays.asList(
                 createNewLog("3") ,
                 createNewLog("4")));
 
         String urlToMatch = "http://123.com?query=ab c";
+        String encdoed = UriUtils.encode( urlToMatch , "UTF-8");
 
         mockMvc.perform(
                 get("/crawler-logs/search")
-                        .param("matchUrl" , urlToMatch )
+                        .param("matchUrl" , encdoed )
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.content[*].id" , hasItems( "3" , "4")));
+                .andExpect(jsonPath("$.content[*].id" , containsInAnyOrder( "3" , "4")));
 
         verify(repository).findAllFinishedWithMatchingSourceUrl(eq(urlToMatch));
     }

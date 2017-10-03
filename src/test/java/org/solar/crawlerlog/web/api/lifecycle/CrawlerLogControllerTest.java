@@ -97,7 +97,7 @@ public class CrawlerLogControllerTest {
         verify(crawlerLogService).addCelebrities(logIdCaptor.capture() , celebritiesCaptor.capture());
 
         assertThat(logIdCaptor.getValue() , equalTo(LogId.fromString("123")));
-        assertThat(celebritiesCaptor.getValue() , hasItems(
+        assertThat(celebritiesCaptor.getValue() , containsInAnyOrder(
                 hasProperty("name", equalTo("Arnold")),
                 hasProperty("name", equalTo("Elton"))
         ));
