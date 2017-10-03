@@ -31,9 +31,9 @@ public class CrawlerLogApplicationHappyPaths {
     @Test
     public void crawlerLogFullLifeCycleTest() throws Exception {
 
+        String entryPoint = "/";
 
-
-        ResponseEntity<Resource<Object>> response = restClient.<Resource<String>>getForEntity("/" , (Class)Resource.class);
+        ResponseEntity<Resource<Object>> response = get(entryPoint);
 
         assertThat( response.getStatusCode() , equalTo(HttpStatus.OK) );
 
@@ -42,13 +42,13 @@ public class CrawlerLogApplicationHappyPaths {
         assertThat( crawlerLogsUri , notNullValue());
         assertThat( crawlerSearchLink , notNullValue());
 
-        response = restClient.postForEntity(crawlerLogsUri.getHref() , newCrawlerLogRequest() , (Class)Resource.class);
+        response = post(crawlerLogsUri.getHref() , newCrawlerLogRequest());
 
         assertThat( response.getStatusCode() , equalTo(HttpStatus.CREATED));
         URI createdCrawlerLog = response.getHeaders().getLocation();
         assertThat( createdCrawlerLog , notNullValue());
 
-        response = restClient.getForEntity(createdCrawlerLog , (Class)Resource.class);
+        response = get(createdCrawlerLog.toString());
 
         assertThat( response.getStatusCode() , equalTo(HttpStatus.OK));
         Link celebritiesSubResource = response.getBody().getLink("celebrities");
@@ -56,14 +56,13 @@ public class CrawlerLogApplicationHappyPaths {
         assertThat( celebritiesSubResource , notNullValue());
         assertThat( repositorySubResource , notNullValue());
 
-        response = restClient.postForEntity(celebritiesSubResource.getHref() , addCelebritiesRequest() ,(Class)Resource.class);
+        response = post(celebritiesSubResource.getHref() , addCelebritiesRequest());
 
         assertThat(response.getStatusCode() , equalTo(HttpStatus.ACCEPTED));
 
-        //strange that put action does not return response or at least status code
-        restClient.put(repositorySubResource.getHref() , createFinishCrawlerLogRequest());
+        put(repositorySubResource.getHref() , createFinishCrawlerLogRequest());
 
-        response = restClient.getForEntity(crawlerSearchLink.getHref() + "?matchUrl={searchValue}" , (Class)Resource.class, UriUtils.encode("www.abc.lt" , "UTF-8"));
+        response = get(crawlerSearchLink.getHref() + "?matchUrl={searchValue}" , UriUtils.encode("www.abc.lt" , "UTF-8"));
 
         assertThat(response.getStatusCode() , equalTo(HttpStatus.OK));
     }
@@ -95,5 +94,20 @@ public class CrawlerLogApplicationHappyPaths {
         HashMap<String , Object> request = new HashMap<>();
         request.put("sourceUrl" , "www.abc.lt");
         return request;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Resource<?>> ResponseEntity<T> get(String url , Object... args) {
+        return restClient.getForEntity(url , (Class)Resource.class ,  args);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Resource<?>> ResponseEntity<T> post(String url , Object request ) {
+        return restClient.postForEntity(url , request, (Class)Resource.class );
+    }
+
+    private void put(String url , Object request) {
+        //strange that put action does not return response or at least status code
+        restClient.put(url , request);
     }
 }
