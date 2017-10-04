@@ -1,9 +1,9 @@
-## Rest service/client demo project
-###You will need:
+# Rest service/client demo project
+##You will need:
 * Installed JDK *1.8+* (obviously)
 * Docker and docker-compose
-###Run _./runMe.sh_ to get system up and running
-####A few words: 
+##Run _./runMe.sh_ to get system up and running
+###A few words: 
 
 - One crawler log service and 5 crawlers will be started. Each crawler will attempt to create a crawler log, 
 fill it with celebrities, and close it.
