@@ -43,4 +43,15 @@ public class CrawlerLogQueryController {
                 .map(CrawlerLogView::fromCrawlerLog)
                 .collect(Collectors.toList()));
     }
+
+    /**
+     * Demo purposes only - hidden from api listing
+     */
+    @GetMapping
+    public Resources<Resource<CrawlerLogView>> dumpAll() throws Exception {
+
+        return new Resources<>(repository.findAll().stream()
+                .map(CrawlerLogView::fromCrawlerLog)
+                .collect(Collectors.toList()));
+    }
 }

@@ -24,4 +24,8 @@ final class CrawlerLogPredicates {
     static Predicate<CrawlerLog> sourceUrlContains(String value) {
         return crawlerLog -> crawlerLog.getSourceUrl().matchesPartially(value);
     }
+
+    static Predicate<CrawlerLog> everything() {
+        return crawlerLog -> true;
+    }
 }

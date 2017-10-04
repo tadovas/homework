@@ -47,29 +47,28 @@ public class ConcurrentHashMapRepository implements CrawlerLogRepository {
 
     @Override
     public Collection<CrawlerLog> findAllUnfinishedForSourceUrl(SourceUrl url) {
-        return Collections.unmodifiableCollection(
-                queryByPredicate(
-                        hasSourceUrl(url).and(notFinished())
-                )
-        );
+        return queryByPredicate(hasSourceUrl(url).and(notFinished()));
     }
 
     @Override
     public Collection<CrawlerLog> findAllUnfinished() {
-        return Collections.unmodifiableCollection(
-                queryByPredicate(notFinished()));
+        return queryByPredicate(notFinished());
     }
 
     @Override
     public Collection<CrawlerLog> findAllFinishedWithMatchingSourceUrl(String value) {
-        return Collections.unmodifiableCollection(
-                queryByPredicate(sourceUrlContains(value).and(finished())));
+        return queryByPredicate(sourceUrlContains(value).and(finished()));
+    }
+
+    @Override
+    public Collection<CrawlerLog> findAll() {
+        return queryByPredicate(everything());
     }
 
     private Collection<CrawlerLog> queryByPredicate(Predicate<CrawlerLog> predicate){
-        return crawlerLogMap.values().stream()
+        return Collections.unmodifiableCollection(crawlerLogMap.values().stream()
                 .filter(predicate)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public int count() {

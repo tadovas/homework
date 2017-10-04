@@ -21,4 +21,6 @@ public interface CrawlerLogRepository {
     Collection<CrawlerLog> findAllUnfinished();
 
     Collection<CrawlerLog> findAllFinishedWithMatchingSourceUrl(String value);
+
+    Collection<CrawlerLog> findAll();
 }
