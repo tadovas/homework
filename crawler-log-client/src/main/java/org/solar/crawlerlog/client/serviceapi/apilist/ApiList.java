@@ -16,6 +16,8 @@ public class ApiList {
         this.restTemplate = restTemplate;
         this.apiListResponse =  restTemplate.getForObject(uri , ApiListResponse.class);
         System.out.println("Greetins from service: \n" + apiListResponse.getMessage());
+        System.out.println("Available apis: ");
+        apiListResponse.getLinks().forEach(System.out::println);
     }
 
     public static ApiList newApiList(String uri) {

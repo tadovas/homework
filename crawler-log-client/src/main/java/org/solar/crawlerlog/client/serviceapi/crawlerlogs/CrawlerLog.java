@@ -25,6 +25,7 @@ public class CrawlerLog {
         Link celebritiesSubresource = currentState.getLink("celebrities");
 
         restTemplate.postForEntity( celebritiesSubresource.getHref() , new AddCelebritiesRequest(celebrities) , Void.class);
+        System.out.println(celebrities.size() + " celebrities added to crawlerlog");
     }
 
     public void finish(String repoId) {
@@ -33,6 +34,7 @@ public class CrawlerLog {
         Link repositorySubresource = currentState.getLink("repository");
 
         restTemplate.put( repositorySubresource.getHref() , new FinishLogRequest(repoId));
+        System.out.println("Crawler log marked as finished with repo: " + repoId);
 
     }
 

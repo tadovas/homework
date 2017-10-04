@@ -19,8 +19,9 @@ public class CrawlerLogs {
         NewCrawlerLogRequest crawlerLogRequest = new NewCrawlerLogRequest(sourceUrl);
 
         ResponseEntity<CrawlerLogCreationResponse> response = restTemplate.postForEntity(url , crawlerLogRequest  , CrawlerLogCreationResponse.class);
+        System.out.println("Created new CrawlerLog for: " + sourceUrl);
 
-        response.getBody().printWarnings();
+        response.getBody().getWarnings().forEach(System.out::println);
 
         String createdCrawlerLogUrl = response.getHeaders().getLocation().toString();
 

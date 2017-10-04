@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class InMemoryStorageHealthIndicator implements HealthIndicator{
 
+    private static final int STORAGE_CAPACITY_THRESHOLD = 100;
+
     private ConcurrentHashMapRepository repository;
 
     @Autowired
@@ -18,9 +20,11 @@ public class InMemoryStorageHealthIndicator implements HealthIndicator{
     @Override
     public Health health() {
 
-        Health.Builder builder = new Health.Builder().withDetail("storage.count" , repository.count());
+        Health.Builder builder = new Health.Builder()
+                .withDetail("storage.capacity.threshold" , STORAGE_CAPACITY_THRESHOLD)
+                .withDetail("storage.count" , repository.count());
 
-        if( repository.count() < 100 ) {
+        if( repository.count() < STORAGE_CAPACITY_THRESHOLD ) {
             return builder.up().build();
         }
 

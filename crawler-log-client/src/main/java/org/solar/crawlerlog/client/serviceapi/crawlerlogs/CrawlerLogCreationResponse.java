@@ -11,7 +11,7 @@ public class CrawlerLogCreationResponse extends ResourceSupport {
     @JsonProperty
     private List<CreationWarning> warnings = Collections.emptyList();
 
-    public void printWarnings() {
-        warnings.forEach(System.out::println);
+    public List<CreationWarning> getWarnings() {
+        return warnings;
     }
 }
