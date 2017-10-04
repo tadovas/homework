@@ -20,7 +20,7 @@ public class InMemoryStorageHealthIndicator implements HealthIndicator{
 
         Health.Builder builder = new Health.Builder().withDetail("storage.count" , repository.count());
 
-        if( repository.count() < 10 ) {
+        if( repository.count() < 100 ) {
             return builder.up().build();
         }
 

@@ -1,5 +1,6 @@
 package org.solar.crawlerlog.client.serviceapi.apilist;
 
+import org.solar.crawlerlog.client.serviceapi.RestTemplateConfigurer;
 import org.solar.crawlerlog.client.serviceapi.crawlerlogs.CrawlerLogs;
 import org.solar.crawlerlog.client.serviceapi.health.HealthApi;
 import org.springframework.hateoas.Link;
@@ -19,7 +20,7 @@ public class ApiList {
 
     public static ApiList newApiList(String uri) {
 
-        return new ApiList( uri , new RestTemplate());
+        return new ApiList( uri , RestTemplateConfigurer.configure());
     }
 
 

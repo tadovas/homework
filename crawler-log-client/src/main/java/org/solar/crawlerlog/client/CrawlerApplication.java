@@ -5,6 +5,7 @@ import org.solar.crawlerlog.client.serviceapi.RecoverableException;
 import org.solar.crawlerlog.client.serviceapi.crawlerlogs.CrawlerLog;
 import org.solar.crawlerlog.client.serviceapi.crawlerlogs.CrawlerLogs;
 import org.solar.crawlerlog.client.serviceapi.apilist.ApiList;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URI;
@@ -33,6 +34,7 @@ public class CrawlerApplication {
             crawlerLog.finish(ScanningData.remoteRepoId());
 
         }).continueOn(RecoverableException.class)
+                .continueOn(HttpServerErrorException.class)
                 .continueOn(ResourceAccessException.class)
                 .sleepForSeconds(2)
                 .repeatIndefinetely()
