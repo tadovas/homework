@@ -21,12 +21,12 @@ subprojects {
 		java {
 			importOrder 'java', 'javax', 'org', 'com'
 			removeUnusedImports()
-            indentWithTabs()
+            indentWithSpaces()
             googleJavaFormat()
 		}
         groovyGradle {
             target '**/*.gradle'
-            indentWithTabs()
+            indentWithSpaces()
         }
 	}
 }
