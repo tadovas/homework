@@ -12,23 +12,23 @@ public class Runner {
         return new Runner(task);
     }
 
-    public Runner sleepForSeconds(int seconds) {
-        task = Runnables.sleepForSeconds(seconds , task);
+    public Runner executeAndSleepSeconds(int seconds) {
+        task = RunnableDecorators.executeAndSleep(seconds , task);
         return this;
     }
 
     public Runner continueOn(Class<? extends RuntimeException> exClass) {
-        task = Runnables.continueOn(exClass , task);
+        task = RunnableDecorators.continueOn(exClass , task);
         return this;
     }
 
     public Runner repeatIndefinetely() {
-        task = Runnables.repeatIndefinetely(task);
+        task = RunnableDecorators.repeatIndefinetely(task);
         return this;
     }
 
-    public Runner logException() {
-        task = Runnables.logException(task);
+    public Runner catchAndLogException() {
+        task = RunnableDecorators.catchAndLogException(task);
         return this;
     }
 

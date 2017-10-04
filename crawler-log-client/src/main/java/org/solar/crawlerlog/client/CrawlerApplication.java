@@ -36,9 +36,9 @@ public class CrawlerApplication {
         }).continueOn(RecoverableException.class)
                 .continueOn(HttpServerErrorException.class)
                 .continueOn(ResourceAccessException.class)
-                .sleepForSeconds(2)
+                .executeAndSleepSeconds(2)
                 .repeatIndefinetely()
-                .logException()
+                .catchAndLogException()
                 .go();
 
 

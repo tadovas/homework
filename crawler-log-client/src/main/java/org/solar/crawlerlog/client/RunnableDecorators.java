@@ -1,8 +1,8 @@
 package org.solar.crawlerlog.client;
 
-public class Runnables {
+public class RunnableDecorators {
 
-    public static Runnable sleepForSeconds(int seconds , Runnable task) {
+    public static Runnable executeAndSleep(int seconds , Runnable task) {
         return () -> {
             try {
                 task.run();
@@ -38,7 +38,7 @@ public class Runnables {
         };
     }
 
-    public static Runnable logException(Runnable task) {
+    public static Runnable catchAndLogException(Runnable task) {
         return () -> {
             try {
                 task.run();
