@@ -3,6 +3,9 @@ apply plugin: 'application'
 
 mainClassName = 'org.solar.crawlerlog.client.CrawlerApplication'
 
+//avoid super long version in jar (complicated docker file script)
+distZip.setVersion('')
+
 dependencies {
     compile('org.springframework:spring-web:4.3.11.RELEASE')
     compile('com.fasterxml.jackson.core:jackson-databind:2.8.10')

@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  crawler-log-service:
+    build: ./crawler-log-service
+    ports:
+    - "8080:8080"
+  
+  crawler-log-client:
+    build: ./crawler-log-client
+    depends_on:
+    - crawler-log-service
+    command: http://crawler-log-service:8080/
+
