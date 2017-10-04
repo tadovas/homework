@@ -1,17 +1,15 @@
 package org.solar.crawlerlog.client.serviceapi.crawlerlogs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.hateoas.ResourceSupport;
-
 import java.util.Collections;
 import java.util.List;
+import org.springframework.hateoas.ResourceSupport;
 
 public class CrawlerLogCreationResponse extends ResourceSupport {
 
-    @JsonProperty
-    private List<CreationWarning> warnings = Collections.emptyList();
+  @JsonProperty private List<CreationWarning> warnings = Collections.emptyList();
 
-    public List<CreationWarning> getWarnings() {
-        return warnings;
-    }
+  public List<CreationWarning> getWarnings() {
+    return warnings;
+  }
 }

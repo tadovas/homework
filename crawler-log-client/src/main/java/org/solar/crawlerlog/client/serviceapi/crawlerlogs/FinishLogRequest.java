@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FinishLogRequest {
 
-    @JsonProperty
-    private String repositoryId;
+  @JsonProperty private String repositoryId;
 
-    public FinishLogRequest(String repositoryId) {
-        this.repositoryId = repositoryId;
-    }
+  public FinishLogRequest(String repositoryId) {
+    this.repositoryId = repositoryId;
+  }
 }

@@ -1,5 +1,9 @@
 package org.solar.crawlerlog.web.api.home;
 
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,33 +12,28 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @RunWith(SpringRunner.class)
 @WebMvcTest(HomeController.class)
 public class HomeControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    public void homeUrlShouldBeAccessible() throws Exception {
+  @Test
+  public void homeUrlShouldBeAccessible() throws Exception {
 
-        mockMvc.perform(
-                get("/")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.description" , not(isEmptyString())))
-                .andExpect(jsonPath("$.links[*].rel" , contains(
-                        equalTo("crawler-logs"),
-                        equalTo("crawler-logs-search"),
-                        equalTo("Swagger-ui-human-eyes-only"),
-                        equalTo("health"),
-                        equalTo("metrics")
-                        )));
-
-    }
+    mockMvc
+        .perform(get("/").accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(jsonPath("$.description", not(isEmptyString())))
+        .andExpect(
+            jsonPath(
+                "$.links[*].rel",
+                contains(
+                    equalTo("crawler-logs"),
+                    equalTo("crawler-logs-search"),
+                    equalTo("Swagger-ui-human-eyes-only"),
+                    equalTo("health"),
+                    equalTo("metrics"))));
+  }
 }

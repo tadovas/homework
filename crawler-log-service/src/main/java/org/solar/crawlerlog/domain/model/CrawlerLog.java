@@ -7,69 +7,68 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CrawlerLog {
 
-    private LogId id;
+  private LogId id;
 
-    private SourceUrl sourceUrl;
+  private SourceUrl sourceUrl;
 
-    /**
-     * Because of our naive in-memory repository implementation approach, persisted objects are not thread safe and might be shared
-     * between threads (return reference not copy). @see {@link org.solar.crawlerlog.persistence.ConcurrentHashMapRepository}
-     */
-    private Collection<Celebrity> celebrityList = new ConcurrentLinkedQueue<>();
+  /**
+   * Because of our naive in-memory repository implementation approach, persisted objects are not
+   * thread safe and might be shared between threads (return reference not copy). @see {@link
+   * org.solar.crawlerlog.persistence.ConcurrentHashMapRepository}
+   */
+  private Collection<Celebrity> celebrityList = new ConcurrentLinkedQueue<>();
 
-    /**
-     * Same as above - muating reference
-     */
-    private volatile RemoteRepositoryId repositoryId = null;
+  /** Same as above - muating reference */
+  private volatile RemoteRepositoryId repositoryId = null;
 
-    private CrawlerLog(LogId id, SourceUrl sourceUrl) {
+  private CrawlerLog(LogId id, SourceUrl sourceUrl) {
 
-        this.id = id;
-        this.sourceUrl = sourceUrl;
+    this.id = id;
+    this.sourceUrl = sourceUrl;
+  }
+
+  public boolean isFinished() {
+    return repositoryId != null;
+  }
+
+  private void ensureNotFinished() {
+
+    if (isFinished()) {
+      throw new LogAlreadyFinishedException(
+          "Log is already finished: " + id + " repo: " + repositoryId);
     }
+  }
 
-    public boolean isFinished() {
-        return repositoryId != null;
-    }
+  public void addCelebrities(Collection<Celebrity> celebrities) {
 
-    private void ensureNotFinished() {
+    ensureNotFinished();
+    celebrityList.addAll(celebrities);
+  }
 
-        if(isFinished()) {
-            throw new LogAlreadyFinishedException("Log is already finished: " + id + " repo: " + repositoryId);
-        }
-    }
+  public void finish(RemoteRepositoryId repositoryId) {
 
-    public void addCelebrities(Collection<Celebrity> celebrities) {
+    ensureNotFinished();
+    this.repositoryId = repositoryId;
+  }
 
-        ensureNotFinished();
-        celebrityList.addAll(celebrities);
-    }
+  public LogId getId() {
+    return id;
+  }
 
-    public void finish(RemoteRepositoryId repositoryId) {
+  public SourceUrl getSourceUrl() {
+    return sourceUrl;
+  }
 
-        ensureNotFinished();
-        this.repositoryId = repositoryId;
-    }
+  public Optional<RemoteRepositoryId> getRepositoryId() {
+    return Optional.ofNullable(repositoryId);
+  }
 
-    public LogId getId() {
-        return id;
-    }
+  public Collection<Celebrity> getCelebrities() {
+    return Collections.unmodifiableCollection(celebrityList);
+  }
 
-    public SourceUrl getSourceUrl() {
-        return sourceUrl;
-    }
+  public static CrawlerLog newCrawlerLog(LogId id, SourceUrl sourceUrl) {
 
-    public Optional<RemoteRepositoryId> getRepositoryId() {
-        return Optional.ofNullable(repositoryId);
-    }
-
-    public Collection<Celebrity> getCelebrities() {
-        return Collections.unmodifiableCollection(celebrityList);
-    }
-
-    public static CrawlerLog newCrawlerLog(LogId id , SourceUrl sourceUrl){
-
-        return new CrawlerLog(id , sourceUrl);
-    }
-
+    return new CrawlerLog(id, sourceUrl);
+  }
 }

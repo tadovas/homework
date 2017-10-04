@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CrawlerLogApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CrawlerLogApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(CrawlerLogApplication.class, args);
+  }
 }

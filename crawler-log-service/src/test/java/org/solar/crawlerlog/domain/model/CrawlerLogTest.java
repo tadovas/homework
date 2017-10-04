@@ -1,72 +1,71 @@
 package org.solar.crawlerlog.domain.model;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.solar.crawlerlog.domain.model.*;
+import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
-
-import static com.github.npathai.hamcrestopt.OptionalMatchers.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class CrawlerLogTest {
 
-    private CrawlerLog crawlerLog;
+  private CrawlerLog crawlerLog;
 
-    @Before
-    public void beforeEach() {
+  @Before
+  public void beforeEach() {
 
-        crawlerLog = CrawlerLog.newCrawlerLog(LogId.fromString("id") , SourceUrl.fromString("url"));
-    }
+    crawlerLog = CrawlerLog.newCrawlerLog(LogId.fromString("id"), SourceUrl.fromString("url"));
+  }
 
-    @Test
-    public void idAndSourceUrlShouldBePersisted() {
+  @Test
+  public void idAndSourceUrlShouldBePersisted() {
 
-        assertThat(crawlerLog , allOf(
-                hasProperty("id" , equalTo(LogId.fromString("id"))),
-                hasProperty("sourceUrl" , equalTo(SourceUrl.fromString("url")))
-        ));
-    }
+    assertThat(
+        crawlerLog,
+        allOf(
+            hasProperty("id", equalTo(LogId.fromString("id"))),
+            hasProperty("sourceUrl", equalTo(SourceUrl.fromString("url")))));
+  }
 
-    @Test
-    public void celebrityListShouldBePersisted() {
+  @Test
+  public void celebrityListShouldBePersisted() {
 
-        Celebrity celeb1 = new Celebrity("Arnold", "actor");
-        Celebrity celeb2 = new Celebrity("Elton", "singer");
+    Celebrity celeb1 = new Celebrity("Arnold", "actor");
+    Celebrity celeb2 = new Celebrity("Elton", "singer");
 
-        crawlerLog.addCelebrities(Arrays.asList(celeb1));
-        crawlerLog.addCelebrities(Arrays.asList(celeb2));
+    crawlerLog.addCelebrities(Arrays.asList(celeb1));
+    crawlerLog.addCelebrities(Arrays.asList(celeb2));
 
-        assertThat(crawlerLog.getCelebrities() ,
-                hasItems( celeb1 , celeb2)
-        );
-    }
+    assertThat(crawlerLog.getCelebrities(), hasItems(celeb1, celeb2));
+  }
 
-    @Test
-    public void crawlerLogShoudBeFinished() {
+  @Test
+  public void crawlerLogShoudBeFinished() {
 
-        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
+    crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
 
-        assertThat(crawlerLog.isFinished() , equalTo(true));
-        assertThat(crawlerLog.getRepositoryId() , isPresentAnd(equalTo(RemoteRepositoryId.fromString("repoId"))));
-    }
+    assertThat(crawlerLog.isFinished(), equalTo(true));
+    assertThat(
+        crawlerLog.getRepositoryId(),
+        isPresentAnd(equalTo(RemoteRepositoryId.fromString("repoId"))));
+  }
 
-    @Test(expected = LogAlreadyFinishedException.class)
-    public void shouldThrowLogAlreadyClosedExceptionWhenAddingCelebsOnClosedLog() {
+  @Test(expected = LogAlreadyFinishedException.class)
+  public void shouldThrowLogAlreadyClosedExceptionWhenAddingCelebsOnClosedLog() {
 
-        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
-        crawlerLog.addCelebrities(Arrays.asList(new Celebrity("Arnold", "actor")));
+    crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
+    crawlerLog.addCelebrities(Arrays.asList(new Celebrity("Arnold", "actor")));
 
-        fail("LogAlreadyFinishedException expected");
-    }
+    fail("LogAlreadyFinishedException expected");
+  }
 
-    @Test(expected = LogAlreadyFinishedException.class)
-    public void shouldThrowLogAlreadyFinishedExceptionWhenFinishingAlreadyClosedLog() {
+  @Test(expected = LogAlreadyFinishedException.class)
+  public void shouldThrowLogAlreadyFinishedExceptionWhenFinishingAlreadyClosedLog() {
 
-        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
-        crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
+    crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
+    crawlerLog.finish(RemoteRepositoryId.fromString("repoId"));
 
-        fail("LogAlreadyFinishedException expected");
-    }
+    fail("LogAlreadyFinishedException expected");
+  }
 }

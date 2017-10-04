@@ -1,12 +1,33 @@
+
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.6.0"
+}
+
 subprojects {
-	apply plugin: 'java'
+
+	repositories {
+		mavenCentral()
+	}
+
+    apply plugin: 'java'
+	apply plugin: 'com.diffplug.gradle.spotless'
+
 
 	group = 'org.solar'
 	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = 1.8
 
-	repositories {
-		mavenCentral()
+	spotless {
+		java {
+			importOrder 'java', 'javax', 'org', 'com'
+			removeUnusedImports()
+            indentWithTabs()
+            googleJavaFormat()
+		}
+        groovyGradle {
+            target '**/*.gradle'
+            indentWithTabs()
+        }
 	}
 }
 

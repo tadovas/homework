@@ -8,35 +8,34 @@ import org.springframework.web.client.RestTemplate;
 
 public class ApiList {
 
-    private RestTemplate restTemplate;
+  private RestTemplate restTemplate;
 
-    private ApiListResponse apiListResponse;
+  private ApiListResponse apiListResponse;
 
-    private ApiList(String uri , RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-        this.apiListResponse =  restTemplate.getForObject(uri , ApiListResponse.class);
-        System.out.println("Greetins from service: \n" + apiListResponse.getMessage());
-        System.out.println("Available apis: ");
-        apiListResponse.getLinks().forEach(System.out::println);
-    }
+  private ApiList(String uri, RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+    this.apiListResponse = restTemplate.getForObject(uri, ApiListResponse.class);
+    System.out.println("Greetins from service: \n" + apiListResponse.getMessage());
+    System.out.println("Available apis: ");
+    apiListResponse.getLinks().forEach(System.out::println);
+  }
 
-    public static ApiList newApiList(String uri) {
+  public static ApiList newApiList(String uri) {
 
-        return new ApiList( uri , RestTemplateConfigurer.configure());
-    }
+    return new ApiList(uri, RestTemplateConfigurer.configure());
+  }
 
+  public HealthApi getHealthApi() {
 
-    public HealthApi getHealthApi() {
+    Link healthLink = apiListResponse.getLink("health");
 
-        Link healthLink  = apiListResponse.getLink("health");
+    return new HealthApi(healthLink.getHref(), restTemplate);
+  }
 
-        return new HealthApi( healthLink.getHref() , restTemplate);
-    }
+  public CrawlerLogs getCrawlerLogsApi() {
 
-    public CrawlerLogs getCrawlerLogsApi() {
+    Link crawlerLogsLink = apiListResponse.getLink("crawler-logs");
 
-        Link crawlerLogsLink = apiListResponse.getLink("crawler-logs");
-
-        return new CrawlerLogs(crawlerLogsLink.getHref() , restTemplate);
-    }
+    return new CrawlerLogs(crawlerLogsLink.getHref(), restTemplate);
+  }
 }

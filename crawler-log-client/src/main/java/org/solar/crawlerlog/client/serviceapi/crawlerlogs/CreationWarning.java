@@ -4,17 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CreationWarning {
 
-    @JsonProperty
-    private String code;
+  @JsonProperty private String code;
 
-    @JsonProperty
-    private String message;
+  @JsonProperty private String message;
 
-    @Override
-    public String toString() {
-        return "CreationWarning{" +
-                "code='" + code + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "CreationWarning{" + "code='" + code + '\'' + ", message='" + message + '\'' + '}';
+  }
 }

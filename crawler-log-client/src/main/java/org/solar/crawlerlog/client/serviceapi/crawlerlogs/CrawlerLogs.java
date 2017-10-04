@@ -5,27 +5,27 @@ import org.springframework.web.client.RestTemplate;
 
 public class CrawlerLogs {
 
-    private String url;
+  private String url;
 
-    private RestTemplate restTemplate;
+  private RestTemplate restTemplate;
 
-    public CrawlerLogs(String url, RestTemplate restTemplate) {
-        this.url = url;
-        this.restTemplate = restTemplate;
-    }
+  public CrawlerLogs(String url, RestTemplate restTemplate) {
+    this.url = url;
+    this.restTemplate = restTemplate;
+  }
 
-    public CrawlerLog createNew(String sourceUrl) {
+  public CrawlerLog createNew(String sourceUrl) {
 
-        NewCrawlerLogRequest crawlerLogRequest = new NewCrawlerLogRequest(sourceUrl);
+    NewCrawlerLogRequest crawlerLogRequest = new NewCrawlerLogRequest(sourceUrl);
 
-        ResponseEntity<CrawlerLogCreationResponse> response = restTemplate.postForEntity(url , crawlerLogRequest  , CrawlerLogCreationResponse.class);
-        System.out.println("Created new CrawlerLog for: " + sourceUrl);
+    ResponseEntity<CrawlerLogCreationResponse> response =
+        restTemplate.postForEntity(url, crawlerLogRequest, CrawlerLogCreationResponse.class);
+    System.out.println("Created new CrawlerLog for: " + sourceUrl);
 
-        response.getBody().getWarnings().forEach(System.out::println);
+    response.getBody().getWarnings().forEach(System.out::println);
 
-        String createdCrawlerLogUrl = response.getHeaders().getLocation().toString();
+    String createdCrawlerLogUrl = response.getHeaders().getLocation().toString();
 
-        return new CrawlerLog( createdCrawlerLogUrl , restTemplate);
-    }
-
+    return new CrawlerLog(createdCrawlerLogUrl, restTemplate);
+  }
 }

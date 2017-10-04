@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class LogNotFoundExceptionAdvice {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(CrawlerLogNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handeException( CrawlerLogNotFoundException exception) {
+  @ExceptionHandler(CrawlerLogNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public void handeException(CrawlerLogNotFoundException exception) {
 
-        logger.error("Caught exception" , exception);
-    }
+    logger.error("Caught exception", exception);
+  }
 }

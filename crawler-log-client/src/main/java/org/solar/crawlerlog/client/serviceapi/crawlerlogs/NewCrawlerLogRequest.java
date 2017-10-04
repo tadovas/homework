@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NewCrawlerLogRequest {
 
-    @JsonProperty
-    private String sourceUrl;
+  @JsonProperty private String sourceUrl;
 
-    public NewCrawlerLogRequest(String sourceUrl) {
-        this.sourceUrl = sourceUrl;
-    }
+  public NewCrawlerLogRequest(String sourceUrl) {
+    this.sourceUrl = sourceUrl;
+  }
 }

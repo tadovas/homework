@@ -26,13 +26,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.hateoas:spring-hateoas')
-    compile('io.dropwizard.metrics:metrics-core')
-    compile('com.ryantenney.metrics:metrics-spring:3.1.3')
+	compile('io.dropwizard.metrics:metrics-core')
+	compile('com.ryantenney.metrics:metrics-spring:3.1.3')
 	//compile('io.springfox:springfox-swagger2:2.7.0')
-    //compile('io.springfox:springfox-swagger-ui:2.7.0')
+	//compile('io.springfox:springfox-swagger-ui:2.7.0')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.hamcrest:hamcrest-core:1.3')
-    testCompile('com.github.npathai:hamcrest-optional:2.0.0')
+	testCompile('com.github.npathai:hamcrest-optional:2.0.0')
 	testCompile('com.jayway.jsonpath:json-path:2.3.0')
 }

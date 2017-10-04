@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HealthResponse {
 
-    @JsonProperty
-    private String status;
+  @JsonProperty private String status;
 
-    public String getStatus() {
-        return status;
-    }
+  public String getStatus() {
+    return status;
+  }
 }

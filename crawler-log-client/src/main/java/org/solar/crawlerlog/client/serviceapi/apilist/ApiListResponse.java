@@ -5,11 +5,9 @@ import org.springframework.hateoas.ResourceSupport;
 
 public class ApiListResponse extends ResourceSupport {
 
-    @JsonProperty
-    private String description;
+  @JsonProperty private String description;
 
-    public String getMessage() {
-        return  description;
-    }
-
+  public String getMessage() {
+    return description;
+  }
 }

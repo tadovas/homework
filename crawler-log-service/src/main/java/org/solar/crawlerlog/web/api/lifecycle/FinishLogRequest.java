@@ -6,11 +6,9 @@ import org.solar.crawlerlog.domain.model.RemoteRepositoryId;
 
 public class FinishLogRequest {
 
-    @JsonProperty
-    @NotBlank
-    private String repositoryId;
+  @JsonProperty @NotBlank private String repositoryId;
 
-    public RemoteRepositoryId getRemoteRepositoryId() {
-        return RemoteRepositoryId.fromString(repositoryId);
-    }
+  public RemoteRepositoryId getRemoteRepositoryId() {
+    return RemoteRepositoryId.fromString(repositoryId);
+  }
 }

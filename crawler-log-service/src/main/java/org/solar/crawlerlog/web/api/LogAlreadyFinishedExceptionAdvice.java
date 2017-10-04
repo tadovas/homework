@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class LogAlreadyFinishedExceptionAdvice {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(LogAlreadyFinishedException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public void handleException(LogAlreadyFinishedException exception) {
+  @ExceptionHandler(LogAlreadyFinishedException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public void handleException(LogAlreadyFinishedException exception) {
 
-        logger.error("Caught exception", exception);
-    }
+    logger.error("Caught exception", exception);
+  }
 }

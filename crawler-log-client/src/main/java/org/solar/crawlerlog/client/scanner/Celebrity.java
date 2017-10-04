@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Celebrity {
 
-    @JsonProperty
-    private String name;
+  @JsonProperty private String name;
 
-    @JsonProperty
-    private String occupation;
+  @JsonProperty private String occupation;
 
-    public Celebrity(String name, String occupation) {
-        this.name = name;
-        this.occupation = occupation;
-    }
+  public Celebrity(String name, String occupation) {
+    this.name = name;
+    this.occupation = occupation;
+  }
 }
