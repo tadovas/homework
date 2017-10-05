@@ -44,7 +44,7 @@ public class CrawlerLogController {
   }
 
   @GetMapping(path = "/{id}")
-  public Resource<CrawlerLogView> getCrawlerLogById(@PathVariable("id") @NotEmpty String id) {
+  public CrawlerLogView getCrawlerLogById(@PathVariable("id") @NotEmpty String id) {
     return CrawlerLogView.fromCrawlerLog(
         crawlerLogService.findCrawlerLogById(LogId.fromString(id)));
   }

@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
 import org.solar.crawlerlog.web.api.CrawlerLogView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class CrawlerLogQueryController {
   }
 
   @GetMapping(params = {"unfinished"})
-  public Resources<Resource<CrawlerLogView>> findAllUnfinishedJobs() {
+  public Resources<CrawlerLogView> findAllUnfinishedJobs() {
 
     return new Resources<>(
         repository
@@ -36,7 +35,7 @@ public class CrawlerLogQueryController {
   }
 
   @GetMapping(params = {"matchUrl"})
-  public Resources<Resource<CrawlerLogView>> findAllFinishedAndMatching(
+  public Resources<CrawlerLogView> findAllFinishedAndMatching(
       @RequestParam("matchUrl") String value) throws Exception {
 
     String decodedUrl = UriUtils.decode(value, "UTF-8");
@@ -51,7 +50,7 @@ public class CrawlerLogQueryController {
 
   /** Demo purposes only - hidden from api listing */
   @GetMapping
-  public Resources<Resource<CrawlerLogView>> dumpAll() throws Exception {
+  public Resources<CrawlerLogView> dumpAll() throws Exception {
 
     return new Resources<>(
         repository

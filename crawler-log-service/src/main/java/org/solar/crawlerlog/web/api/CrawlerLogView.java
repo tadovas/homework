@@ -8,9 +8,9 @@ import org.solar.crawlerlog.domain.model.Celebrity;
 import org.solar.crawlerlog.domain.model.CrawlerLog;
 import org.solar.crawlerlog.domain.model.RemoteRepositoryId;
 import org.solar.crawlerlog.web.api.lifecycle.CrawlerLogController;
-import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceSupport;
 
-public class CrawlerLogView {
+public class CrawlerLogView extends ResourceSupport {
 
   @JsonProperty private String id;
 
@@ -22,7 +22,7 @@ public class CrawlerLogView {
 
   @JsonProperty private boolean finished;
 
-  private CrawlerLogView(CrawlerLog crawlerLog) {
+  protected CrawlerLogView(CrawlerLog crawlerLog) {
 
     this.id = crawlerLog.getId().toString();
     this.sourceUrl = crawlerLog.getSourceUrl().toString();
@@ -31,10 +31,9 @@ public class CrawlerLogView {
     this.repository = crawlerLog.getRepositoryId().map(RemoteRepositoryId::toString).orElse(null);
   }
 
-  public static Resource<CrawlerLogView> fromCrawlerLog(CrawlerLog crawlerLog) {
+  public static CrawlerLogView fromCrawlerLog(CrawlerLog crawlerLog) {
 
-    Resource<CrawlerLogView> crawlerLogViewResource =
-        new Resource<>(new CrawlerLogView(crawlerLog));
+    CrawlerLogView crawlerLogViewResource = new CrawlerLogView(crawlerLog);
 
     String logIdAsString = crawlerLog.getId().toString();
 
