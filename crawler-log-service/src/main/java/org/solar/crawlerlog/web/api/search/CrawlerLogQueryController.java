@@ -1,5 +1,8 @@
 package org.solar.crawlerlog.web.api.search;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import java.util.stream.Collectors;
 import org.solar.crawlerlog.domain.repository.CrawlerLogRepository;
 import org.solar.crawlerlog.web.api.CrawlerLogView;
@@ -23,6 +26,8 @@ public class CrawlerLogQueryController {
     this.repository = repository;
   }
 
+  @ApiOperation(value = "Find all unfinished crawler logs")
+  @ApiImplicitParams(@ApiImplicitParam(name = "unfinished", dataTypeClass = Boolean.class))
   @GetMapping(params = {"unfinished"})
   public Resources<CrawlerLogView> findAllUnfinishedJobs() {
 
@@ -34,6 +39,8 @@ public class CrawlerLogQueryController {
             .collect(Collectors.toList()));
   }
 
+  @ApiImplicitParams(@ApiImplicitParam(name = "matchUrl", dataTypeClass = String.class))
+  @ApiOperation("Find all finished logs, with sourceUrls matching value")
   @GetMapping(params = {"matchUrl"})
   public Resources<CrawlerLogView> findAllFinishedAndMatching(
       @RequestParam("matchUrl") String value) throws Exception {
@@ -49,6 +56,7 @@ public class CrawlerLogQueryController {
   }
 
   /** Demo purposes only - hidden from api listing */
+  @ApiOperation("Dumps everything - no paging :)")
   @GetMapping
   public Resources<CrawlerLogView> dumpAll() throws Exception {
 

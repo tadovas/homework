@@ -23,6 +23,7 @@ public class SwaggerConfiguration {
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(apiInfo())
+        .enableUrlTemplating(true)
         .useDefaultResponseMessages(false)
         .forCodeGeneration(false)
         .select()

@@ -2,6 +2,9 @@ package org.solar.crawlerlog.web.api.lifecycle;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.net.URI;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.solar.crawlerlog.domain.model.LogId;
@@ -26,6 +29,11 @@ public class CrawlerLogController {
     this.crawlerLogService = crawlerLogService;
   }
 
+  @ApiOperation("Create new crawler log")
+  @ApiResponses({
+    @ApiResponse(code = 201, message = "Log successfully created"),
+    @ApiResponse(code = 400, message = "Request body validation problem")
+  })
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createNewCrawlerLog(@RequestBody @Validated NewLogRequest logRequest)
       throws Exception {
@@ -43,12 +51,27 @@ public class CrawlerLogController {
         .body(new Resource<>(new NewLogCreationResponse(creationResult)));
   }
 
+  @ApiOperation("Find crawler log by id")
+  @ApiResponses({
+    @ApiResponse(code = 200, message = "Log by id is found successfully"),
+    @ApiResponse(code = 404, message = "Log by id is not found")
+  })
   @GetMapping(path = "/{id}")
   public CrawlerLogView getCrawlerLogById(@PathVariable("id") @NotEmpty String id) {
     return CrawlerLogView.fromCrawlerLog(
         crawlerLogService.findCrawlerLogById(LogId.fromString(id)));
   }
 
+  @ApiOperation("Add celebrities to the log defined by id")
+  @ApiResponses({
+    @ApiResponse(code = 202, message = "Celebrities added successfully"),
+    @ApiResponse(code = 404, message = "Log not found by id"),
+    @ApiResponse(code = 400, message = "Request data validation failed"),
+    @ApiResponse(
+      code = 409,
+      message = "Log is already finished, not furher modifications available"
+    )
+  })
   @PostMapping(path = "/{id}/celebrities", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> addCelebritiesToLog(
       @PathVariable("id") @NotEmpty String id,
@@ -58,6 +81,16 @@ public class CrawlerLogController {
     return ResponseEntity.accepted().build();
   }
 
+  @ApiOperation("Finish log by sending remote repository id")
+  @ApiResponses({
+    @ApiResponse(code = 202, message = "Log was finished successfully"),
+    @ApiResponse(code = 404, message = "Log not found by id"),
+    @ApiResponse(code = 400, message = "Request data validation failed"),
+    @ApiResponse(
+      code = 409,
+      message = "Log is already finished, not furher modifications available"
+    )
+  })
   @PutMapping(path = "/{id}/repository", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> finishLog(
       @PathVariable("id") @NotEmpty String id, @RequestBody @Validated FinishLogRequest request) {
